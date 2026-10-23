@@ -1,0 +1,18 @@
+{
+  "appId": "fr.uvsq.mmi3.optinoisy",
+  "appName": "O'Pti Noisy Pizza",
+  "webDir": "version-w3c",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "Geolocation": {
+      "permissions": ["location"]
+    },
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0D0B0A"
+    }
+  }
+}

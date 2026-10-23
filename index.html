@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TP Web Mobile MMI3 2026 — Cahier des Charges 3 : O'Pti Noisy Pizza (Bootstrap &amp; W3C)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-outer: #24150C;
+      --bg-cream: #F6F1E9;
+      --paper: #FFFDF9;
+      --espresso: #432918;
+      --espresso-soft: #6E5544;
+      --terracotta: #B83A24;
+      --terracotta-hover: #962D1A;
+      --olive: #2E4A36;
+      --border: rgba(67, 41, 24, 0.16);
+      --border-strong: rgba(67, 41, 24, 0.34);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-outer);
+      color: var(--espresso);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    .portal-container {
+      max-width: 860px;
+      width: 100%;
+      background-color: var(--bg-cream);
+      border: 1px solid rgba(255, 253, 249, 0.16);
+      border-radius: 14px;
+      padding: 2.25rem;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.65);
+    }
+    @media (max-width: 600px) {
+      .portal-container {
+        padding: 1.35rem;
+      }
+    }
+    h1, h2, h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      color: var(--espresso);
+      margin-top: 0;
+      letter-spacing: -0.02em;
+    }
+    .uni-tag {
+      display: inline-block;
+      background-color: var(--paper);
+      border: 1px solid var(--border-strong);
+      color: var(--espresso);
+      padding: 0.32rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.85rem;
+    }
+    .version-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.15rem;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 650px) {
+      .version-cards { grid-template-columns: 1fr; }
+    }
+    .v-card {
+      background-color: var(--paper);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      padding: 0.65rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.86rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background-color 0.15s ease;
+    }
+    .btn-terracotta { background-color: var(--terracotta); color: #ffffff; }
+    .btn-terracotta:hover { background-color: var(--terracotta-hover); }
+    .btn-espresso { background-color: var(--espresso); color: #ffffff; }
+    .btn-espresso:hover { background-color: #2D1B0F; }
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+      margin-top: 0.85rem;
+    }
+    @media (max-width: 650px) {
+      .features-list { grid-template-columns: 1fr; }
+    }
+    .f-item {
+      background-color: var(--paper);
+      border: 1px solid var(--border);
+      padding: 0.75rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="portal-container">
+    <div class="uni-tag">
+      IUT de Vélizy • Université Paris-Saclay • MMI3 — Octobre 2026
+    </div>
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">
+      Cahier des Charges N°3 — O'Pti Noisy Pizza
+    </h1>
+    <p style="color: var(--espresso-soft); font-size: 0.92rem; margin-top: 0;">
+      Site web mobile BtoC de commande de pizzas avec menu complet, sélecteur de tailles (<strong>Junior 26 cm</strong>, <strong>Moyenne 31 cm</strong>, <strong>Familiale 40 cm</strong>), création de compte, paiement en ligne, livraison avec géolocalisation interne et passerelles <strong>Uber Eats / Deliveroo</strong>.
+    </p>
+
+    <!-- LES 2 PROTOTYPES ATTENDUS -->
+    <div class="version-cards">
+      <!-- Prototype 1 : Bootstrap -->
+      <article class="v-card">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span style="background: var(--espresso); color: #fff; padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Livrable 1</span>
+            <span style="font-size: 0.74rem; color: var(--terracotta); font-weight: 700;">HTML / CSS / JS / Bootstrap 5</span>
+          </div>
+          <h2 style="font-size: 1.25rem; margin-bottom: 0.45rem;">Version 1 — Bootstrap 5.3</h2>
+          <p style="font-size: 0.82rem; color: var(--espresso-soft); margin-bottom: 1.15rem;">
+            Prototype complet basé sur Bootstrap 5.3 : grille mobile, Carousel, Offcanvas (Panier &amp; Compte), Modals (Personnalisation, Paiement, Passerelles) et Toasts.
+          </p>
+        </div>
+        <a href="version-bootstrap/index.html" class="btn btn-terracotta">
+          Ouvrir la Version 1 (Bootstrap) →
+        </a>
+      </article>
+
+      <!-- Prototype 2 : W3C -->
+      <article class="v-card">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span style="background: var(--olive); color: #fff; padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Livrable 2</span>
+            <span style="font-size: 0.74rem; color: var(--olive); font-weight: 700;">HTML5 / CSS3 / JS W3C</span>
+          </div>
+          <h2 style="font-size: 1.25rem; margin-bottom: 0.45rem;">Version 2 — Standard W3C</h2>
+          <p style="font-size: 0.82rem; color: var(--espresso-soft); margin-bottom: 1.15rem;">
+            Prototype complet codé 100 % en HTML5 sémantique, CSS3 natif (Variables, Grid, Flexbox) et balises natives <code>&lt;dialog&gt;</code>, conforme au validateur W3C.
+          </p>
+        </div>
+        <a href="version-w3c/index.html" class="btn btn-espresso">
+          Ouvrir la Version 2 (W3C) →
+        </a>
+      </article>
+    </div>
+
+    <!-- RÉCAPITULATIF DES FONCTIONNALITÉS DU CAHIER DES CHARGES 3 -->
+    <h3 style="font-size: 0.98rem; margin-bottom: 0.4rem;">
+      Fonctionnalités intégrées dans les deux versions :
+    </h3>
+    <div class="features-list">
+      <div class="f-item">
+        <strong>Carte &amp; 3 Tailles SVG (26 / 31 / 40 cm)</strong><br>
+        <span style="color: var(--espresso-soft);">Bascule directe entre les SVG marron <code>#432918</code> sur fond crème et les SVG blancs sur fond actif.</span>
+      </div>
+      <div class="f-item">
+        <strong>Géolocalisation Interne &amp; Carte</strong><br>
+        <span style="color: var(--espresso-soft);">API GPS HTML5 + Carte interactive Leaflet centrée sur Noisy-le-Grand (rayon 5 km).</span>
+      </div>
+      <div class="f-item">
+        <strong>Passerelles Uber Eats &amp; Deliveroo</strong><br>
+        <span style="color: var(--espresso-soft);">Bascule automatique hors zone (&gt;5 km) ou transfert du panier en un clic.</span>
+      </div>
+      <div class="f-item">
+        <strong>Compte Client &amp; Paiement en Ligne</strong><br>
+        <span style="color: var(--espresso-soft);">Création de compte, programme fidélité, paiement par carte bancaire et suivi de commande.</span>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

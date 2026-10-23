@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F6F1E9">
+  <meta name="description" content="O'Pti Noisy Pizza — Prototype Web Mobile conforme aux standards W3C (HTML5 / CSS3 / JS natif). Commande de pizzas 26, 31, 40 cm, paiement en ligne, géolocalisation interne et passerelles Uber Eats / Deliveroo.">
+  <title>O'Pti Noisy — Forno a Legna (Version W3C Native)</title>
+
+  <!-- Google Fonts : Fraunces (Titres éditoriaux) & Plus Jakarta Sans (Corps UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons (Police d'icônes vectorielles identique à la version Bootstrap) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS (Carte de géolocalisation interne) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Feuille de style 100% CSS3 W3C Native -->
+  <link rel="stylesheet" href="css/style-w3c.css?v=2">
+</head>
+<body>
+
+  <div class="w3c-app-shell" id="w3cTop">
+
+    <!-- 1. HEADER MOBILE SÉMANTIQUE -->
+    <header class="w3c-header">
+      <a href="#w3cTop" class="w3c-brand">
+        <span class="w3c-brand-monogram" aria-hidden="true">ON</span>
+        <span>
+          <span class="w3c-brand-title">O'Pti Noisy</span>
+          <span class="w3c-brand-sub">Forno a Legna • Standard W3C</span>
+        </span>
+      </a>
+
+      <div class="w3c-header-actions">
+        <a href="../index.html" class="w3c-btn w3c-btn-sm w3c-btn-outline" title="Retour au portail comparatif">
+          Portail
+        </a>
+        <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-espresso" id="btnOpenAccount">
+          <svg class="w3c-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="w3cHeaderUserLabel">Connexion</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. HERO SLIDER MOBILE -->
+    <section class="w3c-hero" aria-label="Sélection à la une O'Pti Noisy">
+      <div id="w3cHeroTrack">
+        <!-- Injecté dynamiquement par app-w3c.js -->
+      </div>
+      <div class="w3c-hero-dots" id="w3cHeroDots" role="tablist" aria-label="Sélection de diapositive"></div>
+    </section>
+
+    <!-- 3. SÉLECTEUR DE MODE DE RÉCEPTION & PASSERELLES BtoC -->
+    <section class="w3c-delivery-bar" aria-labelledby="headingModeLivraison">
+      <div class="w3c-delivery-top">
+        <h2 id="headingModeLivraison" style="font-size: 0.8rem; margin: 0; font-family: var(--font-body); font-weight: 700;">
+          <span class="w3c-tag w3c-tag-olive">
+            <i class="bi bi-geo-alt-fill me-1"></i><span id="w3cDistanceBadge">1,2 km • Zone Interne</span>
+          </span>
+          <span style="color: var(--espresso-soft); margin-left: 0.35rem;" id="w3cEtaBadge">
+            <i class="bi bi-clock me-1"></i>22 min
+          </span>
+        </h2>
+        <a href="#w3cSectionGeoloc" style="color: var(--terracotta); text-decoration: none; font-weight: 700; font-size: 0.78rem;">
+          Vérifier ma zone <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="w3c-channel-grid" id="w3cChannelGrid">
+        <button type="button" class="w3c-channel-pill active-interne" data-mode="livraison_interne">
+          <span><i class="bi bi-bicycle me-1"></i>Livraison Interne</span>
+          <span style="font-size: 0.7rem; opacity: 0.85;">Dès 0 €</span>
+        </button>
+        <button type="button" class="w3c-channel-pill" data-mode="click_collect">
+          <span><i class="bi bi-shop me-1"></i>À Emporter</span>
+          <span style="font-size: 0.7rem; opacity: 0.85;">15 min</span>
+        </button>
+        <button type="button" class="w3c-channel-pill" data-mode="ubereats">
+          <span><i class="bi bi-box-arrow-up-right me-1"></i>Uber Eats</span>
+          <span style="font-size: 0.7rem; opacity: 0.8;">Passerelle</span>
+        </button>
+        <button type="button" class="w3c-channel-pill" data-mode="deliveroo">
+          <span><i class="bi bi-box-arrow-up-right me-1"></i>Deliveroo</span>
+          <span style="font-size: 0.7rem; opacity: 0.8;">Passerelle</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. GUIDE DES 3 TAILLES DE PIZZAS (ICÔNES SVG OFFICIELLES #432918 SUR FOND CRÈME) -->
+    <section class="w3c-sizes-legend" aria-labelledby="headingGuideTailles">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 id="headingGuideTailles" style="font-size: 0.85rem; margin: 0;">
+          <i class="bi bi-aspect-ratio me-1"></i>Trois Formats Façonnés à la Main
+        </h2>
+        <span class="w3c-tag w3c-tag-paper">Levain 48h</span>
+      </div>
+      <div class="w3c-sizes-legend-grid">
+        <div class="w3c-sizes-legend-item">
+          <img src="../assets/icons/picto-pizza-junior-26.svg" alt="Icône Pizza Junior 26 cm">
+          <div style="font-size: 0.72rem; font-weight: 700; margin-top: 2px;">Junior 26 cm</div>
+          <div style="font-size: 0.65rem; color: var(--espresso-soft);">1 pers • Tarif base</div>
+        </div>
+        <div class="w3c-sizes-legend-item">
+          <img src="../assets/icons/picto-pizza-moyenne-31.svg" alt="Icône Pizza Moyenne 31 cm">
+          <div style="font-size: 0.72rem; font-weight: 700; margin-top: 2px;">Moyenne 31 cm</div>
+          <div style="font-size: 0.65rem; color: var(--espresso-soft);">1-2 pers • +3,50 €</div>
+        </div>
+        <div class="w3c-sizes-legend-item">
+          <img src="../assets/icons/picto-pizza-familiale-40.svg" alt="Icône Pizza Familiale 40 cm">
+          <div style="font-size: 0.72rem; font-weight: 700; margin-top: 2px;">Familiale 40 cm</div>
+          <div style="font-size: 0.65rem; color: var(--espresso-soft);">3-4 pers • +7,00 €</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. NAVIGATION CATÉGORIES & RECHERCHE -->
+    <nav class="w3c-cat-nav" id="w3cCategoryNav" aria-label="Filtrer par catégorie de produits">
+      <!-- Injecté dynamiquement -->
+    </nav>
+
+    <!-- Barre de recherche rapide (identique à la version Bootstrap) -->
+    <div class="w3c-search-wrap">
+      <div class="w3c-input-group">
+        <span class="w3c-input-group-text" aria-hidden="true">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="search" id="w3cSearchInput" class="w3c-input" placeholder="Rechercher une recette, un ingrédient, une formule..." aria-label="Rechercher une recette, un ingrédient, une formule">
+      </div>
+    </div>
+
+    <!-- 6. CONTENU PRINCIPAL : CARTE DES PRODUITS -->
+    <main class="w3c-section" id="w3cSectionMenu">
+      <div class="w3c-section-header">
+        <h2 id="w3cActiveCategoryHeading" style="font-size: 1.2rem; margin: 0;">Toute la Carte</h2>
+        <span class="w3c-tag w3c-tag-paper" id="w3cProductCount">14 recettes</span>
+      </div>
+
+      <div class="w3c-products-grid" id="w3cProductsGrid">
+        <!-- Cartes injectées dynamiquement -->
+      </div>
+    </main>
+
+    <!-- 7. SECTION GÉOLOCALISATION INTERNE & PASSERELLES UBER EATS / DELIVEROO -->
+    <section class="w3c-section" id="w3cSectionGeoloc" style="border-top: 1px solid var(--border-subtle);" aria-labelledby="headingGeolocSection">
+      <div class="w3c-section-header">
+        <h2 id="headingGeolocSection" style="font-size: 1.15rem; margin: 0;">Zone de Livraison &amp; Géolocalisation</h2>
+        <span class="w3c-tag w3c-tag-olive">Rayon 5 km</span>
+      </div>
+
+      <p style="font-size: 0.82rem; color: var(--espresso-soft); margin-top: 0;">
+        Calculez votre distance par rapport à notre four à bois de <strong>Noisy-le-Grand</strong> pour bénéficier de notre livraison interne ou basculer vers nos passerelles <strong>Uber Eats</strong> et <strong>Deliveroo</strong>.
+      </p>
+
+      <button type="button" class="w3c-btn w3c-btn-terracotta w3c-btn-block" id="w3cBtnRealGeoloc">
+        <i class="bi bi-crosshair me-1"></i> Me géolocaliser via le GPS de l'appareil
+      </button>
+
+      <!-- Carte Leaflet -->
+      <div id="w3cGeoMap" aria-label="Carte de livraison O'Pti Noisy"></div>
+
+      <div id="w3cGeoAlertBox" class="w3c-alert w3c-alert-success" role="status" style="display: flex; align-items: flex-start; gap: 0.5rem;">
+        <i class="bi bi-check-circle-fill" style="font-size: 1.2rem;"></i>
+        <div>
+          <strong id="w3cGeoAlertTitle">Zone Interne Couverte (1,2 km)</strong>
+          <div id="w3cGeoAlertDesc" style="margin-top: 0.2rem;">
+            28 Avenue Émile Cossonneau, 93160 Noisy-le-Grand • Livraison interne estimée en 20 min.
+          </div>
+        </div>
+      </div>
+
+      <!-- Passerelles Uber Eats & Deliveroo -->
+      <div style="padding: 0.95rem; border-radius: var(--radius-md); background: var(--surface-paper); border: 1px solid var(--border-strong);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+          <h3 style="font-size: 0.98rem; margin: 0;">Passerelles Officielles Uber Eats &amp; Deliveroo</h3>
+          <span class="w3c-tag w3c-tag-paper">BtoC</span>
+        </div>
+        <p style="font-size: 0.78rem; color: var(--espresso-soft); margin: 0 0 0.75rem 0;">
+          Vous résidez au-delà de 5 km ou préférez commander via votre application habituelle ? Transférez votre panier en un clic :
+        </p>
+        <div class="w3c-form-row">
+          <button type="button" class="w3c-btn w3c-btn-ubereats w3c-btn-block" id="btnGatewayUber">
+            UBER EATS (20-30m)
+          </button>
+          <button type="button" class="w3c-btn w3c-btn-deliveroo w3c-btn-block" id="btnGatewayDeliveroo">
+            DELIVEROO (25-35m)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. FOOTER MOBILE -->
+    <footer style="padding: 1.5rem 1rem; text-align: center; font-size: 0.875em; border-top: 1px solid var(--border-subtle); color: var(--espresso-soft);">
+      <div style="font-family: var(--font-heading); font-weight: 700; color: var(--espresso); font-size: 1rem; margin-bottom: 0.25rem;">O'Pti Noisy — Forno a Legna</div>
+      <div>14 Rue de la République, 93160 Noisy-le-Grand • 01 43 05 26 40</div>
+      <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.5rem;">
+        <span style="background-color: var(--surface-paper); color: var(--espresso); border: 1px solid var(--border-strong); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25rem 0.55rem; border-radius: 4px;">Livrable 2 : W3C Standard</span>
+        <a href="../version-bootstrap/index.html" style="background: var(--espresso); color: #fff; border: 1px solid var(--border-strong); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25rem 0.55rem; border-radius: 4px; text-decoration: none;">
+          Ouvrir la Version 1 (Bootstrap) →
+        </a>
+      </div>
+    </footer>
+
+    <!-- 9. BARRE DE NAVIGATION BASSE FIXE (Mêmes icônes que Bootstrap) -->
+    <nav class="w3c-bottom-nav" aria-label="Navigation rapide en bas d'écran">
+      <button type="button" class="w3c-bottom-tab active" id="w3cNavMenu">
+        <i class="bi bi-book"></i>
+        <span>La Carte</span>
+      </button>
+      <button type="button" class="w3c-bottom-tab" id="w3cNavGeo">
+        <i class="bi bi-geo-alt"></i>
+        <span>Livraison</span>
+      </button>
+      <button type="button" class="w3c-bottom-tab" id="w3cNavCart">
+        <i class="bi bi-bag"></i>
+        <span class="w3c-cart-badge" id="w3cBottomCartCount">2</span>
+        <span id="w3cBottomCartTotal">25,40 €</span>
+      </button>
+      <button type="button" class="w3c-bottom-tab" id="w3cNavAccount">
+        <i class="bi bi-person"></i>
+        <span id="w3cBottomUserLabel">Compte</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- =========================================================================
+       DIALOG 1 : PERSONNALISATION DE PIZZA (TAILLE 26/31/40cm + BASE + SUPPLÉMENTS)
+       ========================================================================= -->
+  <dialog class="w3c-dialog" id="dialogCustomize" aria-labelledby="dialogCustomizeTitle">
+    <div class="w3c-dialog-header">
+      <h2 id="dialogCustomizeTitle" style="font-size: 1.05rem; margin: 0;">Personnaliser ma Pizza</h2>
+      <button type="button" class="w3c-close-btn" id="btnCloseCustomize" aria-label="Fermer">✕</button>
+    </div>
+    <div class="w3c-dialog-body">
+      <div class="w3c-form-group">
+        <span class="w3c-label">1. Format de la pâte (26, 31 ou 40 cm) :</span>
+        <div class="w3c-size-selector" id="w3cModalSizeSelector"></div>
+      </div>
+
+      <div class="w3c-form-group">
+        <label for="w3cModalBaseSelect" class="w3c-label">2. Base artisanale :</label>
+        <select id="w3cModalBaseSelect" class="w3c-input"></select>
+      </div>
+
+      <div class="w3c-form-group">
+        <span class="w3c-label">3. Garnitures supplémentaires :</span>
+        <div id="w3cModalSupplements" style="display: flex; flex-direction: column; gap: 0.4rem;"></div>
+      </div>
+    </div>
+    <div class="w3c-dialog-footer">
+      <div>
+        <span style="font-size: 0.75rem; color: var(--espresso-soft); display: block;">Total recette :</span>
+        <strong style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--terracotta);" id="w3cModalTotalPrice">13,40 €</strong>
+      </div>
+      <button type="button" class="w3c-btn w3c-btn-terracotta" id="w3cBtnConfirmCustomize">
+        Ajouter au panier
+      </button>
+    </div>
+  </dialog>
+
+  <!-- =========================================================================
+       DIALOG 2 : PANIER & CODE PROMO
+       ========================================================================= -->
+  <dialog class="w3c-dialog" id="dialogCart" aria-labelledby="dialogCartTitle">
+    <div class="w3c-dialog-header">
+      <div>
+        <h2 id="dialogCartTitle" style="font-size: 1.05rem; margin: 0;">Votre Panier</h2>
+        <small style="color: var(--terracotta); font-weight: 600; font-size: 0.74rem;" id="w3cCartModeSubtitle">Mode : Livraison Interne</small>
+      </div>
+      <button type="button" class="w3c-close-btn" id="btnCloseCart" aria-label="Fermer">✕</button>
+    </div>
+    <div class="w3c-dialog-body">
+      <div id="w3cCartItemsList" style="margin-bottom: 0.85rem;"></div>
+
+      <div class="w3c-form-group">
+        <div class="w3c-input-group">
+          <span class="w3c-input-group-text" aria-hidden="true">
+            <i class="bi bi-tag"></i>
+          </span>
+          <input type="text" id="w3cPromoInput" class="w3c-input has-right-btn" placeholder="Code remise (ex : MMI2026 ou NOISY)" aria-label="Code remise">
+          <button type="button" class="w3c-btn w3c-btn-espresso" id="w3cBtnApplyPromo">Appliquer</button>
+        </div>
+        <div id="w3cPromoFeedback" style="font-size: 0.76rem; margin-top: 0.25rem; font-weight: 600;"></div>
+      </div>
+
+      <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--surface-paper); border: 1px solid var(--border-subtle); font-size: 0.82rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+          <span style="color: var(--espresso-soft);">Sous-total articles</span>
+          <strong id="w3cSummarySubtotal">0,00 €</strong>
+        </div>
+        <div id="w3cSummaryDiscountRow" class="hidden" style="display: flex; justify-content: space-between; margin-bottom: 0.3rem; color: var(--olive);">
+          <span>Remise appliquée</span>
+          <strong id="w3cSummaryDiscount">-0,00 €</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+          <span style="color: var(--espresso-soft);" id="w3cSummaryDeliveryLabel">Livraison Interne</span>
+          <strong style="color: var(--olive);" id="w3cSummaryDeliveryFee">Offerte</strong>
+        </div>
+        <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 0.5rem 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 1rem; font-weight: 700;">
+          <span>Total TTC à régler</span>
+          <span style="font-family: var(--font-heading); color: var(--terracotta);" id="w3cSummaryTotal">0,00 €</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <button type="button" class="w3c-btn w3c-btn-terracotta w3c-btn-block" id="w3cBtnOpenCheckout">
+          <i class="bi bi-credit-card me-1"></i> Régler en ligne (<span id="w3cCheckoutBtnAmount">25,40 €</span>)
+        </button>
+        <div class="w3c-form-row">
+          <button type="button" class="w3c-btn w3c-btn-ubereats w3c-btn-block" id="w3cCartUberBtn">
+            Passerelle Uber Eats
+          </button>
+          <button type="button" class="w3c-btn w3c-btn-deliveroo w3c-btn-block" id="w3cCartDeliverooBtn">
+            Passerelle Deliveroo
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- =========================================================================
+       DIALOG 3 : CRÉATION DE COMPTE & ESPACE CLIENT BtoC
+       ========================================================================= -->
+  <dialog class="w3c-dialog" id="dialogAccount" aria-labelledby="dialogAccountTitle">
+    <div class="w3c-dialog-header">
+      <h2 id="dialogAccountTitle" style="font-size: 1.05rem; margin: 0;">Compte Client &amp; Fidélité</h2>
+      <button type="button" class="w3c-close-btn" id="btnCloseAccount" aria-label="Fermer">✕</button>
+    </div>
+    <div class="w3c-dialog-body">
+
+      <!-- VUE DÉCONNECTÉ -->
+      <div id="w3cAccountLoggedOut">
+        <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--surface-paper); border: 1px solid var(--border-strong); margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--espresso);">Compte Démo Pré-rempli</div>
+            <div style="font-size: 0.72rem; color: var(--espresso-soft);">Charger le profil Lucas Martin</div>
+          </div>
+          <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-espresso" id="w3cBtnDemoLogin">Charger</button>
+        </div>
+
+        <div class="w3c-form-row" style="margin-bottom: 0.85rem;">
+          <button type="button" class="w3c-btn w3c-btn-espresso" id="w3cTabBtnRegister">Créer un compte</button>
+          <button type="button" class="w3c-btn w3c-btn-outline" id="w3cTabBtnLogin">Se connecter</button>
+        </div>
+
+        <!-- Formulaire Inscription -->
+        <form id="w3cRegisterForm">
+          <div class="w3c-form-row">
+            <div class="w3c-form-group">
+              <label for="w3cRegPrenom" class="w3c-label">Prénom *</label>
+              <input type="text" id="w3cRegPrenom" class="w3c-input" required placeholder="Lucas">
+            </div>
+            <div class="w3c-form-group">
+              <label for="w3cRegNom" class="w3c-label">Nom *</label>
+              <input type="text" id="w3cRegNom" class="w3c-input" required placeholder="Martin">
+            </div>
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegEmail" class="w3c-label">Email *</label>
+            <input type="email" id="w3cRegEmail" class="w3c-input" required placeholder="lucas.martin@etudiant.uvsq.fr">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegTel" class="w3c-label">Téléphone mobile *</label>
+            <input type="tel" id="w3cRegTel" class="w3c-input" required placeholder="06 52 84 19 30">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegAdresse" class="w3c-label">Adresse de livraison *</label>
+            <input type="text" id="w3cRegAdresse" class="w3c-input" required placeholder="28 Avenue Émile Cossonneau">
+          </div>
+          <div class="w3c-form-row">
+            <div class="w3c-form-group">
+              <label for="w3cRegCp" class="w3c-label">Code Postal *</label>
+              <input type="text" id="w3cRegCp" class="w3c-input" required placeholder="93160">
+            </div>
+            <div class="w3c-form-group">
+              <label for="w3cRegVille" class="w3c-label">Ville *</label>
+              <input type="text" id="w3cRegVille" class="w3c-input" required placeholder="Noisy-le-Grand">
+            </div>
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegPass" class="w3c-label">Mot de passe *</label>
+            <input type="password" id="w3cRegPass" class="w3c-input" required minlength="6" placeholder="••••••••">
+          </div>
+          <button type="submit" class="w3c-btn w3c-btn-terracotta w3c-btn-block">
+            Créer mon compte client (+50 pts offerts)
+          </button>
+        </form>
+
+        <!-- Formulaire Connexion -->
+        <form id="w3cLoginForm" class="hidden">
+          <div class="w3c-form-group">
+            <label for="w3cLoginEmail" class="w3c-label">Email client *</label>
+            <input type="email" id="w3cLoginEmail" class="w3c-input" required value="lucas.martin@etudiant.uvsq.fr">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cLoginPass" class="w3c-label">Mot de passe *</label>
+            <input type="password" id="w3cLoginPass" class="w3c-input" required value="optinoisy2026">
+          </div>
+          <button type="submit" class="w3c-btn w3c-btn-terracotta w3c-btn-block">
+            Se connecter
+          </button>
+        </form>
+      </div>
+
+      <!-- VUE CONNECTÉ -->
+      <div id="w3cAccountLoggedIn" class="hidden">
+        <div style="padding: 0.85rem; border-radius: var(--radius-sm); background: var(--surface-paper); border: 1px solid var(--border-subtle); margin-bottom: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong id="w3cUserFullName" style="font-family: var(--font-heading); font-size: 1rem;">Lucas Martin</strong>
+              <div id="w3cUserEmail" style="font-size: 0.76rem; color: var(--espresso-soft);">lucas.martin@etudiant.uvsq.fr</div>
+            </div>
+            <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline" id="w3cBtnLogout">Déconnexion</button>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--espresso-soft); margin-top: 0.5rem;">
+            <div><i class="bi bi-telephone me-1"></i><span id="w3cUserPhone">06 52 84 19 30</span></div>
+            <div><i class="bi bi-geo-alt me-1"></i><span id="w3cUserAddress">28 Avenue Émile Cossonneau, 93160 Noisy-le-Grand</span></div>
+          </div>
+        </div>
+
+        <div style="padding: 0.85rem; border-radius: var(--radius-sm); background: var(--espresso); color: var(--surface-paper); margin-bottom: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700;">
+            <span style="font-family: var(--font-heading);">Programme Fidélité O'Pti Noisy</span>
+            <span id="w3cUserPointsLabel">85 / 100 pts</span>
+          </div>
+          <div style="background: rgba(255,255,255,0.2); height: 7px; border-radius: 4px; margin: 0.45rem 0; overflow: hidden;">
+            <div id="w3cUserPointsBar" style="background: var(--bg-cream); width: 85%; height: 100%;"></div>
+          </div>
+          <small style="font-size: 0.72rem; opacity: 0.8;">100 points = 1 Pizza Junior 26 cm offerte.</small>
+        </div>
+
+        <h3 style="font-size: 0.92rem; margin-bottom: 0.5rem;">Historique des commandes</h3>
+        <div id="w3cOrderHistory" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- =========================================================================
+       DIALOG 4 : PAIEMENT EN LIGNE & TRACKER EN DIRECT
+       ========================================================================= -->
+  <dialog class="w3c-dialog" id="dialogCheckout" aria-labelledby="dialogCheckoutTitle">
+    <div class="w3c-dialog-header">
+      <h2 id="dialogCheckoutTitle" style="font-size: 1.05rem; margin: 0;">Paiement en Ligne 3D-Secure</h2>
+      <button type="button" class="w3c-close-btn" id="btnCloseCheckout" aria-label="Fermer">✕</button>
+    </div>
+    <div class="w3c-dialog-body">
+
+      <!-- Étape Formulaire CB -->
+      <div id="w3cPaymentFormWrap">
+        <div class="w3c-cb-card">
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; opacity: 0.85; margin-bottom: 0.65rem;">
+            <span>O'PTI NOISY • CB / VISA</span>
+            <span><i class="bi bi-shield-check"></i> 3D SECURE</span>
+          </div>
+          <div id="w3cCardPreviewNum" style="font-family: monospace; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.65rem;">
+            4970 1234 5678 2026
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.74rem;">
+            <span id="w3cCardPreviewName">LUCAS MARTIN</span>
+            <span id="w3cCardPreviewExp">10/28</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.85rem;" role="group" aria-label="Méthode de paiement">
+          <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-espresso"><i class="bi bi-credit-card me-1"></i>Carte Bancaire</button>
+          <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline"><i class="bi bi-apple me-1"></i>Apple Pay</button>
+          <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline"><i class="bi bi-google me-1"></i>Google Pay</button>
+        </div>
+
+        <form id="w3cPaymentForm">
+          <div class="w3c-form-group">
+            <label for="w3cInputCardName" class="w3c-label">Titulaire de la carte *</label>
+            <input type="text" id="w3cInputCardName" class="w3c-input" required value="LUCAS MARTIN">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cInputCardNum" class="w3c-label">Numéro de carte (16 chiffres) *</label>
+            <input type="text" id="w3cInputCardNum" class="w3c-input" required maxlength="19" value="4970 1234 5678 2026">
+          </div>
+          <div class="w3c-form-row">
+            <div class="w3c-form-group">
+              <label for="w3cInputCardExp" class="w3c-label">Expiration (MM/AA) *</label>
+              <input type="text" id="w3cInputCardExp" class="w3c-input" required maxlength="5" value="10/28">
+            </div>
+            <div class="w3c-form-group">
+              <label for="w3cInputCardCvv" class="w3c-label">Code CVV *</label>
+              <input type="password" id="w3cInputCardCvv" class="w3c-input" required maxlength="3" value="842">
+            </div>
+          </div>
+          <button type="submit" class="w3c-btn w3c-btn-terracotta w3c-btn-block" style="margin-top: 0.4rem;">
+            <i class="bi bi-lock-fill me-1"></i> Confirmer et régler <span id="w3cPaySubmitAmount">25,40 €</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Étape Confirmation & Suivi -->
+      <div id="w3cPaymentSuccessWrap" class="hidden" style="text-align: center;">
+        <div style="margin-bottom: 0.4rem; color: var(--olive); font-size: 2.2rem;">
+          <i class="bi bi-check2-circle"></i>
+        </div>
+        <h3 style="margin-bottom: 0.25rem; color: var(--olive);">Commande Enregistrée</h3>
+        <p style="font-size: 0.82rem; color: var(--espresso-soft); margin-top: 0;">
+          Référence : <strong style="color: var(--terracotta);" id="w3cConfirmedOrderNum">OPN-2026-901</strong>
+        </p>
+
+        <div style="text-align: left; margin: 1rem 0; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem;">
+          <div style="padding: 0.65rem; border-radius: 6px; background: var(--olive-bg); border-left: 4px solid var(--olive); display: flex; align-items: center; gap: 0.6rem;">
+            <i class="bi bi-check-circle-fill" style="color: var(--olive); font-size: 1.1rem;"></i>
+            <div>
+              <strong>1. Règlement en ligne accepté</strong>
+              <div style="font-size: 0.72rem; color: var(--espresso-soft);">Transaction bancaire validée</div>
+            </div>
+          </div>
+          <div style="padding: 0.65rem; border-radius: 6px; background: #fdf2ef; border-left: 4px solid var(--terracotta); display: flex; align-items: center; gap: 0.6rem;">
+            <i class="bi bi-fire" style="color: var(--terracotta); font-size: 1.1rem;"></i>
+            <div>
+              <strong>2. Cuisson au four à bois (400 °C)</strong>
+              <div style="font-size: 0.72rem; color: var(--espresso-soft);">Façonnage et cuisson minute</div>
+            </div>
+          </div>
+          <div style="padding: 0.65rem; border-radius: 6px; background: var(--surface-paper); border-left: 4px solid var(--border-strong); display: flex; align-items: center; gap: 0.6rem;">
+            <i class="bi bi-bicycle" style="color: var(--espresso-soft); font-size: 1.1rem;"></i>
+            <div>
+              <strong>3. Livraison géolocalisée en route</strong>
+              <div style="font-size: 0.72rem; color: var(--espresso-soft);">Livreur O'Pti Noisy prêt au départ</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="w3c-btn w3c-btn-espresso" id="w3cBtnDoneOrder">Retourner à la carte</button>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- =========================================================================
+       DIALOG 5 : PASSERELLE PARTENAIRE UBER EATS / DELIVEROO
+       ========================================================================= -->
+  <dialog class="w3c-dialog" id="dialogGateway" aria-labelledby="dialogGatewayTitle">
+    <div class="w3c-dialog-header">
+      <h2 id="dialogGatewayTitle" style="font-size: 1.05rem; margin: 0;">Passerelle Livraison Partenaire</h2>
+      <button type="button" class="w3c-close-btn" id="btnCloseGateway" aria-label="Fermer">✕</button>
+    </div>
+    <div class="w3c-dialog-body" style="text-align: center;">
+      <span class="w3c-tag" id="w3cGatewayBadge" style="font-size: 0.85rem; padding: 0.35rem 0.9rem; margin-bottom: 0.6rem;">UBER EATS</span>
+      <h3 id="w3cGatewayHeading" style="font-size: 1rem; margin-bottom: 0.35rem;">O'Pti Noisy × Uber Eats</h3>
+      <p id="w3cGatewayDesc" style="font-size: 0.8rem; color: var(--espresso-soft); margin-top: 0;"></p>
+
+      <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--surface-paper); border: 1px solid var(--border-subtle); text-align: left; font-size: 0.82rem; margin-bottom: 0.9rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+          <span style="color: var(--espresso-soft);">Panier synchronisé :</span>
+          <strong id="w3cGatewayCartSummary">2 articles</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+          <span style="color: var(--espresso-soft);">Délai coursier :</span>
+          <strong style="color: var(--terracotta);" id="w3cGatewayEta">20 - 30 min</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--espresso-soft);">Frais plateforme :</span>
+          <strong id="w3cGatewayFee">3,49 €</strong>
+        </div>
+      </div>
+
+      <a href="https://www.ubereats.com/fr" target="_blank" rel="noopener noreferrer" class="w3c-btn w3c-btn-block" id="w3cGatewayLink" style="margin-bottom: 0.5rem;">
+        Ouvrir la plateforme partenaire <i class="bi bi-box-arrow-up-right ms-1"></i>
+      </a>
+      <button type="button" class="w3c-btn w3c-btn-outline w3c-btn-block" id="w3cBtnPreferInternal">
+        Revenir à la livraison interne O'Pti Noisy
+      </button>
+    </div>
+  </dialog>
+
+  <!-- NOTIFICATION TOAST NATIVE W3C -->
+  <div id="w3cToast" class="w3c-toast" role="status" aria-live="polite">
+    Recette ajoutée au panier
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="../shared/data.js?v=3"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/app-w3c.js?v=3"></script>
+</body>
+</html>

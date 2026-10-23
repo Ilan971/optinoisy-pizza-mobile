@@ -1,0 +1,823 @@
+/**
+ * O'PTI NOISY PIZZA — Feuille de style 100% CSS3 W3C Native (Sans Framework)
+ * Direction Artistique : Trattoria Éditoriale (Crème Farine #F6F1E9, Brun Espresso SVG #432918, Terracotta Mat #B83A24)
+ * Fichier : version-w3c/css/style-w3c.css
+ */
+
+:root {
+  --bg-outer: #24150c;
+  --bg-cream: #f6f1e9;
+  --surface-paper: #fffdf9;
+  --surface-sand: #ece3d5;
+  --espresso: #432918;
+  --espresso-soft: #6e5544;
+  --terracotta: #b83a24;
+  --terracotta-hover: #962d1a;
+  --olive: #2e4a36;
+  --olive-bg: #e6efe8;
+  --ubereats: #06c167;
+  --deliveroo: #00ccbc;
+  --border-subtle: rgba(67, 41, 24, 0.16);
+  --border-strong: rgba(67, 41, 24, 0.32);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0 0 84px 0;
+  background-color: var(--bg-outer);
+  color: var(--espresso);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--espresso);
+  margin-top: 0;
+  letter-spacing: -0.02em;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Icônes SVG vectorielles sobres inline */
+.w3c-svg-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* Coque Mobile-First centrée sur fond marron foncé pour attirer l'œil sur l'écran */
+.w3c-app-shell {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: var(--bg-cream);
+  border-left: 1px solid rgba(255, 253, 249, 0.14);
+  border-right: 1px solid rgba(255, 253, 249, 0.14);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.65);
+  position: relative;
+}
+
+/* Header Mobile Sticky */
+.w3c-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background-color: var(--bg-cream);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.w3c-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--espresso);
+}
+
+.w3c-brand-monogram {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background-color: var(--espresso);
+  color: var(--surface-paper);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.w3c-brand-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  display: block;
+}
+
+.w3c-brand-sub {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--terracotta);
+  font-weight: 700;
+  display: block;
+}
+
+.w3c-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Boutons Génériques Mats W3C */
+.w3c-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.84rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.w3c-btn-sm {
+  padding: 0.32rem 0.68rem;
+  font-size: 0.76rem;
+}
+
+.w3c-btn-terracotta {
+  background-color: var(--terracotta);
+  color: #ffffff;
+  border-color: var(--terracotta);
+}
+
+.w3c-btn-terracotta:hover {
+  background-color: var(--terracotta-hover);
+}
+
+.w3c-btn-espresso {
+  background-color: var(--espresso);
+  color: #ffffff;
+  border-color: var(--espresso);
+}
+
+.w3c-btn-outline {
+  background-color: var(--surface-paper);
+  color: var(--espresso);
+  border-color: var(--border-strong);
+}
+
+.w3c-btn-outline:hover {
+  background-color: var(--surface-sand);
+}
+
+.w3c-btn-ubereats {
+  background-color: var(--ubereats);
+  color: #051b10;
+  border-color: #059e54;
+  font-weight: 700;
+}
+
+.w3c-btn-deliveroo {
+  background-color: var(--deliveroo);
+  color: #032220;
+  border-color: #00a89b;
+  font-weight: 700;
+}
+
+.w3c-btn-block {
+  width: 100%;
+}
+
+/* Hero Slider Mobile */
+.w3c-hero {
+  position: relative;
+  height: 390px;
+  overflow: hidden;
+  background-color: #0d0b0a;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.w3c-hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.w3c-hero-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.w3c-hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.w3c-hero-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(13, 11, 10, 0.42);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.35rem 1.35rem 2.35rem;
+}
+
+.w3c-hero-dots {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.45rem;
+  z-index: 5;
+}
+
+.w3c-hero-dot {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+}
+
+.w3c-hero-dot.active {
+  background-color: #ffffff;
+}
+
+/* Étiquettes Éditoriales */
+.w3c-tag {
+  display: inline-block;
+  padding: 0.24rem 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+}
+
+.w3c-tag-paper {
+  background-color: var(--surface-paper);
+  color: var(--espresso);
+  border: 1px solid var(--border-strong);
+}
+
+.w3c-tag-espresso {
+  background-color: var(--espresso);
+  color: #ffffff;
+}
+
+.w3c-tag-olive {
+  background-color: var(--olive-bg);
+  color: var(--olive);
+  border: 1px solid rgba(46, 74, 54, 0.25);
+}
+
+/* Bandeau Mode de Réception & Passerelles */
+.w3c-delivery-bar {
+  background-color: var(--surface-paper);
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.w3c-delivery-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  font-size: 0.8rem;
+}
+
+.w3c-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.w3c-channel-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  background-color: var(--bg-cream);
+  border: 1px solid var(--border-subtle);
+  color: var(--espresso);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.w3c-channel-pill.active-interne {
+  background-color: var(--espresso);
+  border-color: var(--espresso);
+  color: #ffffff;
+}
+
+.w3c-channel-pill.active-ubereats {
+  background-color: var(--ubereats);
+  border-color: var(--ubereats);
+  color: #051b10;
+}
+
+.w3c-channel-pill.active-deliveroo {
+  background-color: var(--deliveroo);
+  border-color: var(--deliveroo);
+  color: #032220;
+}
+
+/* Guide des 3 tailles de pizzas (#432918 sur fond Crème) */
+.w3c-sizes-legend {
+  margin: 0.85rem 1rem 0.25rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-paper);
+  border: 1px solid var(--border-subtle);
+}
+
+.w3c-sizes-legend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.w3c-sizes-legend-item {
+  background-color: var(--bg-cream);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.45rem 0.2rem;
+}
+
+.w3c-sizes-legend-item img {
+  height: 28px;
+  width: auto;
+}
+
+/* Barre de Catégories Sticky */
+.w3c-cat-nav {
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.65rem 1rem;
+  background-color: var(--bg-cream);
+  border-bottom: 1px solid var(--border-subtle);
+  scrollbar-width: none;
+}
+
+.w3c-cat-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.w3c-cat-pill {
+  white-space: nowrap;
+  padding: 0.42rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  background-color: var(--surface-paper);
+  color: var(--espresso);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+}
+
+.w3c-cat-pill.active {
+  background-color: var(--espresso);
+  color: #ffffff;
+  border-color: var(--espresso);
+}
+
+/* Barre de recherche (identique au input-group input-group-sm de Bootstrap) */
+.w3c-search-wrap {
+  padding: 1rem 1rem 0;
+}
+
+.w3c-input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.w3c-input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.875rem;
+  background-color: var(--surface-paper);
+  color: var(--espresso);
+  border: 1px solid var(--border-strong);
+  border-right: 0;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.w3c-input-group .w3c-input {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0.32rem 0.65rem;
+  font-size: 0.875rem;
+}
+
+.w3c-input-group .w3c-input.has-right-btn {
+  border-radius: 0;
+}
+
+.w3c-input-group .w3c-btn {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-left: 0;
+}
+
+.w3c-input {
+  width: 100%;
+  padding: 0.52rem 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-paper);
+  color: var(--espresso);
+}
+
+.w3c-input:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: var(--espresso);
+  box-shadow: 0 0 0 2px rgba(67, 41, 24, 0.15);
+}
+
+/* Grille Produits CSS Grid */
+.w3c-section {
+  padding: 1rem;
+}
+
+.w3c-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.w3c-products-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.w3c-card {
+  background-color: var(--surface-paper);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.w3c-card-media {
+  position: relative;
+  height: 190px;
+  background-color: #14100e;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.w3c-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 75%;
+}
+
+.w3c-card-badge-left {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+}
+
+.w3c-card-badge-right {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  background-color: var(--espresso);
+  color: #ffffff;
+  padding: 0.22rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.w3c-card-body {
+  padding: 0.95rem;
+}
+
+.w3c-card-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.w3c-card-title {
+  font-size: 1.04rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.w3c-card-price {
+  font-family: var(--font-heading);
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--terracotta);
+  white-space: nowrap;
+}
+
+.w3c-card-desc {
+  font-size: 0.82rem;
+  color: var(--espresso-soft);
+  margin: 0 0 0.7rem 0;
+}
+
+/* Sélecteur de Tailles de Pizzas (26 / 31 / 40 cm) avec SVG officiels */
+.w3c-size-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+}
+
+.w3c-size-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.25rem;
+  border-radius: 8px;
+  background-color: var(--bg-cream);
+  color: var(--espresso);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.w3c-size-btn img {
+  height: 28px;
+  width: auto;
+  margin-bottom: 3px;
+}
+
+.w3c-size-btn .s-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.w3c-size-btn .s-price {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.w3c-size-btn.active {
+  background-color: var(--espresso);
+  color: #ffffff;
+  border-color: var(--espresso);
+}
+
+.w3c-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.w3c-card-actions .w3c-btn-block {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+/* Carte Leaflet Géolocalisation W3C */
+#w3cGeoMap {
+  width: 100%;
+  height: 230px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  margin: 0.75rem 0;
+  z-index: 1;
+}
+
+.w3c-alert {
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.85rem;
+  font-size: 0.83rem;
+}
+
+.w3c-alert-success {
+  background-color: var(--olive-bg);
+  border: 1px solid rgba(46, 74, 54, 0.3);
+  color: var(--olive);
+}
+
+.w3c-alert-warning {
+  background-color: #fdf2ef;
+  border: 1px solid rgba(184, 58, 36, 0.35);
+  color: var(--terracotta);
+}
+
+/* Balise native HTML5 <dialog> pour Modales & Tiroirs W3C */
+dialog.w3c-dialog {
+  width: 94%;
+  max-width: 480px;
+  max-height: 88vh;
+  background-color: var(--bg-cream);
+  color: var(--espresso);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 0;
+}
+
+dialog.w3c-dialog::backdrop {
+  background-color: rgba(20, 14, 10, 0.62);
+}
+
+.w3c-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--surface-paper);
+}
+
+.w3c-dialog-body {
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+  max-height: 68vh;
+}
+
+.w3c-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--surface-paper);
+}
+
+.w3c-close-btn {
+  background-color: var(--bg-cream);
+  border: 1px solid var(--border-strong);
+  color: var(--espresso);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* Aperçu Carte Bancaire */
+.w3c-cb-card {
+  background-color: var(--espresso);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  color: var(--surface-paper);
+  margin-bottom: 0.85rem;
+}
+
+/* Grille Formulaires */
+.w3c-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.w3c-form-group {
+  margin-bottom: 0.65rem;
+}
+
+.w3c-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--espresso);
+  margin-bottom: 0.22rem;
+}
+
+/* Navigation Basse Fixe (Bottom Navigation W3C) */
+.w3c-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--surface-paper);
+  border-top: 1px solid var(--border-strong);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0.4rem 0.35rem 0.5rem;
+  z-index: 95;
+}
+
+.w3c-bottom-tab {
+  background: transparent;
+  border: none;
+  color: var(--espresso-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.w3c-bottom-tab i {
+  font-size: 1.15rem;
+}
+
+.me-1 {
+  margin-right: 0.25rem;
+}
+
+.ms-1 {
+  margin-left: 0.25rem;
+}
+
+.w3c-bottom-tab.active {
+  color: var(--terracotta);
+  font-weight: 700;
+}
+
+.w3c-cart-badge {
+  position: absolute;
+  top: 0;
+  right: 20%;
+  background-color: var(--terracotta);
+  color: #ffffff;
+  font-size: 0.64rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
+/* Toast Notification W3C */
+.w3c-toast {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background-color: var(--espresso);
+  color: #ffffff;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  z-index: 200;
+  transition: transform 0.25s ease;
+}
+
+.w3c-toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+.hidden {
+  display: none !important;
+}

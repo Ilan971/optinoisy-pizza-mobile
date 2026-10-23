@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#F6F1E9">
+  <meta name="description" content="O'Pti Noisy Pizza — Site mobile de commande de pizzas artisanales (26, 31, 40 cm), paiement en ligne, livraison géolocalisée interne et passerelles Uber Eats / Deliveroo.">
+  <title>O'Pti Noisy — Forno a Legna (Version Bootstrap 5)</title>
+
+  <!-- Google Fonts : Fraunces (Titres éditoriaux) & Plus Jakarta Sans (Corps UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 CSS & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS (Carte de géolocalisation interne) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Styles personnalisés O'Pti Noisy (Direction Trattoria Éditoriale) -->
+  <link rel="stylesheet" href="css/custom-bootstrap.css">
+</head>
+<body>
+
+  <!-- CONTENEUR PRINCIPAL MOBILE-FIRST -->
+  <div class="mobile-app-shell" id="topApp">
+
+    <!-- 1. TOP NAVBAR FIXE MOBILE (Identique à la version W3C) -->
+    <header class="opn-top-navbar">
+      <a href="#topApp" class="opn-brand-logo">
+        <span class="opn-brand-monogram" aria-hidden="true">ON</span>
+        <span>
+          <span class="opn-brand-title">O'Pti Noisy</span>
+          <span class="opn-brand-subtitle">Forno a Legna • Bootstrap 5</span>
+        </span>
+      </a>
+
+      <div class="opn-header-actions">
+        <a href="../index.html" class="opn-header-btn opn-header-btn-outline" title="Retour au portail comparatif">
+          Portail
+        </a>
+        <button type="button" class="opn-header-btn opn-header-btn-espresso" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCompte" id="headerAccountBtn">
+          <svg class="opn-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="headerAccountLabel">Connexion</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. HERO CAROUSEL MOBILE -->
+    <section aria-label="Sélection du moment">
+      <div id="heroPizzaCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators" id="heroCarouselIndicators" style="margin-bottom: 0.75rem;"></div>
+        <div class="carousel-inner" id="heroCarouselInner">
+          <!-- Injecté dynamiquement depuis shared/data.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. BANDEAU MODE DE RÉCEPTION : LIVRAISON GÉOLOC INTERNE / CLICK & COLLECT / UBER EATS / DELIVEROO -->
+    <section class="opn-delivery-strip p-3" aria-label="Mode de livraison et passerelles">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2">
+          <span class="opn-status-pill">
+            <i class="bi bi-geo-alt-fill"></i> <span id="currentDistanceBadge">1,2 km • Zone Interne</span>
+          </span>
+          <small class="fw-semibold" style="color: var(--opn-espresso-soft);" id="currentEtaLabel">
+            <i class="bi bi-clock me-1"></i>22 min
+          </small>
+        </div>
+        <button type="button" class="btn btn-link btn-sm text-decoration-none p-0 fw-bold" style="color: var(--opn-terracotta);" onclick="scrollToSection('sectionLivraisonGeoloc')">
+          Vérifier ma zone <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- 4 Choix rapides de canal BtoC -->
+      <div class="row g-2" id="deliveryChannelSelector">
+        <div class="col-6">
+          <div class="opn-mode-pill active-interne d-flex align-items-center justify-content-between" data-mode="livraison_interne" onclick="selectDeliveryMode('livraison_interne')">
+            <span><i class="bi bi-bicycle me-1"></i>Livraison Interne</span>
+            <span class="small opacity-75">Dès 0 €</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="opn-mode-pill d-flex align-items-center justify-content-between" data-mode="click_collect" onclick="selectDeliveryMode('click_collect')">
+            <span><i class="bi bi-shop me-1"></i>À Emporter</span>
+            <span class="small opacity-75">15 min</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="opn-mode-pill d-flex align-items-center justify-content-between" data-mode="ubereats" onclick="selectDeliveryMode('ubereats')">
+            <span><i class="bi bi-box-arrow-up-right me-1"></i>Uber Eats</span>
+            <small class="opacity-75">Passerelle</small>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="opn-mode-pill d-flex align-items-center justify-content-between" data-mode="deliveroo" onclick="selectDeliveryMode('deliveroo')">
+            <span><i class="bi bi-box-arrow-up-right me-1"></i>Deliveroo</span>
+            <small class="opacity-75">Passerelle</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. LÉGENDE DES 3 TAILLES DE PIZZAS (ICÔNES SVG MARRON #432918 SUR FOND CRÈME) -->
+    <section class="px-3 pt-3 pb-1" aria-label="Guide des tailles de pizzas">
+      <div class="opn-sizes-banner">
+        <div class="d-flex align-items-center justify-content-between mb-2 px-1">
+          <span class="small fw-bold font-heading" style="color: var(--opn-espresso);">
+            <i class="bi bi-aspect-ratio me-1"></i>Trois Formats Façonnés à la Main
+          </span>
+          <span class="opn-badge-editorial">Levain 48h</span>
+        </div>
+        <div class="row g-2 text-center">
+          <div class="col-4">
+            <div class="opn-size-legend-box">
+              <img src="../assets/icons/picto-pizza-junior-26.svg" alt="Pizza Junior 26 cm" style="height: 28px;">
+              <div class="fw-bold mt-1" style="font-size: 0.72rem;">Junior 26 cm</div>
+              <div style="font-size: 0.65rem; color: var(--opn-espresso-soft);">1 pers • Tarif base</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="opn-size-legend-box">
+              <img src="../assets/icons/picto-pizza-moyenne-31.svg" alt="Pizza Moyenne 31 cm" style="height: 28px;">
+              <div class="fw-bold mt-1" style="font-size: 0.72rem;">Moyenne 31 cm</div>
+              <div style="font-size: 0.65rem; color: var(--opn-espresso-soft);">1-2 pers • +3,50 €</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="opn-size-legend-box">
+              <img src="../assets/icons/picto-pizza-familiale-40.svg" alt="Pizza Familiale 40 cm" style="height: 28px;">
+              <div class="fw-bold mt-1" style="font-size: 0.72rem;">Familiale 40 cm</div>
+              <div style="font-size: 0.65rem; color: var(--opn-espresso-soft);">3-4 pers • +7,00 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. BARRE STICKY DE CATÉGORIES & RECHERCHE -->
+    <nav class="sticky-top" style="top: 55px; z-index: 1020;" aria-label="Catégories du menu">
+      <div class="opn-cat-scroller" id="categoryPillsContainer">
+        <!-- Injecté dynamiquement -->
+      </div>
+    </nav>
+
+    <!-- Barre de recherche rapide -->
+    <div class="px-3 pt-3">
+      <div class="input-group input-group-sm">
+        <span class="input-group-text" style="background: var(--opn-paper-surface); border-color: var(--opn-border-strong); color: var(--opn-espresso);">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="search" id="searchInput" class="form-control" placeholder="Rechercher une recette, un ingrédient, une formule...">
+      </div>
+    </div>
+
+    <!-- 6. CATALOGUE DU MENU -->
+    <main class="px-3 py-3" id="sectionMenu">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="h5 fw-bold mb-0 font-heading" id="activeCategoryTitle">Toute la Carte</h2>
+        <span class="opn-badge-editorial" id="productCountBadge">14 recettes</span>
+      </div>
+
+      <div class="row g-3" id="productsGrid">
+        <!-- Cartes produits générées dynamiquement par app-bootstrap.js -->
+      </div>
+    </main>
+
+    <!-- 7. SECTION LIVRAISON AVEC GÉOLOCALISATION INTERNE & PASSERELLES UBER EATS / DELIVEROO -->
+    <section class="px-3 py-4" style="border-top: 1px solid var(--opn-border);" id="sectionLivraisonGeoloc">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 fw-bold mb-0 font-heading">Zone de Livraison &amp; Géolocalisation</h2>
+        <span class="opn-status-pill">Rayon 5 km</span>
+      </div>
+      <p class="small mb-3" style="color: var(--opn-espresso-soft);">
+        Testez votre éligibilité à notre service de livraison interne <strong>O'Pti Noisy</strong> (offert dès 18 € de commande) ou utilisez nos passerelles officielles <strong>Uber Eats</strong> et <strong>Deliveroo</strong>.
+      </p>
+
+      <!-- Bouton GPS réel -->
+      <div class="d-grid gap-2 mb-3">
+        <button type="button" class="btn btn-opn-terracotta py-2" id="btnRealGeoloc">
+          <i class="bi bi-crosshair me-1"></i> Me géolocaliser via le GPS de l'appareil
+        </button>
+      </div>
+
+      <!-- Carte Interactive Leaflet -->
+      <div id="bootstrapGeoMap" class="mb-3" aria-label="Carte de livraison interactive O'Pti Noisy"></div>
+
+      <!-- Résultat du diagnostic de zone de livraison -->
+      <div id="geoResultAlert" class="p-3 rounded-3 mb-3 d-flex align-items-start gap-2" style="background: var(--opn-olive-bg); border: 1px solid rgba(46, 74, 54, 0.3); color: var(--opn-olive);">
+        <i class="bi bi-check-circle-fill fs-5"></i>
+        <div>
+          <div class="fw-bold small" id="geoStatusTitle">Zone Interne Couverte (1,2 km de la pizzeria)</div>
+          <div class="small" id="geoStatusDesc">28 Avenue Émile Cossonneau, 93160 Noisy-le-Grand • Livraison estimée en 20 min par notre livreur interne.</div>
+        </div>
+      </div>
+
+      <!-- PASSERELLES OFFICIELLES UBER EATS & DELIVEROO -->
+      <div class="p-3 rounded-3" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border-strong);">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h3 class="h6 fw-bold mb-0 font-heading">Passerelles Partenaires BtoC</h3>
+          <span class="opn-badge-editorial">Synchronisé</span>
+        </div>
+        <p class="small mb-3" style="color: var(--opn-espresso-soft);">
+          Vous souhaitez commander via votre compte <strong>Uber Eats</strong> ou <strong>Deliveroo</strong>, ou vous résidez au-delà de 5 km ? Transférez votre panier en un clic :
+        </p>
+        <div class="row g-2">
+          <div class="col-6">
+            <button type="button" class="btn btn-ubereats w-100 rounded-2 py-2 px-2 d-flex flex-column align-items-center" onclick="openGatewayModal('ubereats')">
+              <span class="fw-bold">UBER EATS</span>
+              <small style="font-size: 0.7rem;">20-30 min • 4,8 / 5</small>
+            </button>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-deliveroo w-100 rounded-2 py-2 px-2 d-flex flex-column align-items-center" onclick="openGatewayModal('deliveroo')">
+              <span class="fw-bold">DELIVEROO</span>
+              <small style="font-size: 0.7rem;">25-35 min • 4,7 / 5</small>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. FOOTER MOBILE -->
+    <footer class="px-3 py-4 text-center small" style="border-top: 1px solid var(--opn-border); color: var(--opn-espresso-soft);">
+      <div class="fw-bold font-heading mb-1" style="color: var(--opn-espresso); font-size: 1rem;">O'Pti Noisy — Forno a Legna</div>
+      <div>14 Rue de la République, 93160 Noisy-le-Grand • 01 43 05 26 40</div>
+      <div class="mt-3 d-flex justify-content-center gap-2">
+        <span class="opn-badge-editorial">Livrable 1 : Bootstrap 5.3</span>
+        <a href="../version-w3c/index.html" class="opn-badge-editorial text-decoration-none" style="background: var(--opn-espresso); color: #fff;">
+          Ouvrir la Version 2 (W3C) →
+        </a>
+      </div>
+    </footer>
+
+    <!-- 9. BARRE DE NAVIGATION BASSE FIXE (BOTTOM NAVIGATION MOBILE) -->
+    <nav class="opn-bottom-nav" aria-label="Navigation principale mobile">
+      <button type="button" class="opn-bottom-tab active" onclick="scrollToSection('sectionMenu')" id="navTabMenu">
+        <i class="bi bi-book"></i>
+        <span>La Carte</span>
+      </button>
+      <button type="button" class="opn-bottom-tab" onclick="scrollToSection('sectionLivraisonGeoloc')" id="navTabGeo">
+        <i class="bi bi-geo-alt"></i>
+        <span>Livraison</span>
+      </button>
+      <button type="button" class="opn-bottom-tab" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPanier" id="navTabCart">
+        <i class="bi bi-bag"></i>
+        <span class="opn-cart-floating-badge" id="bottomCartCount">2</span>
+        <span id="bottomCartTotal">25,40 €</span>
+      </button>
+      <button type="button" class="opn-bottom-tab" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCompte" id="navTabAccount">
+        <i class="bi bi-person"></i>
+        <span id="bottomAccountLabel">Compte</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- =========================================================================
+       OFFCANVAS 1 : PANIER INTERACTIF & RÉCAPITULATIF DE COMMANDE
+       ========================================================================= -->
+  <div class="offcanvas offcanvas-bottom h-auto rounded-top-4" style="max-height: 88vh; max-width: 520px; margin: 0 auto;" tabindex="-1" id="offcanvasPanier" aria-labelledby="offcanvasPanierLabel">
+    <div class="offcanvas-header" style="border-bottom: 1px solid var(--opn-border);">
+      <div>
+        <h5 class="offcanvas-title fw-bold font-heading" id="offcanvasPanierLabel">Votre Panier</h5>
+        <small class="fw-semibold" style="color: var(--opn-terracotta);" id="cartDeliveryModeSubtitle">Mode : Livraison Interne Géolocalisée</small>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- Liste des articles du panier -->
+      <div id="cartItemsContainer" class="mb-3"></div>
+
+      <!-- Code Promo -->
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" style="background: var(--opn-paper-surface); border-color: var(--opn-border-strong); color: var(--opn-espresso);">
+          <i class="bi bi-tag"></i>
+        </span>
+        <input type="text" id="promoCodeInput" class="form-control" placeholder="Code remise (ex : MMI2026 ou NOISY)">
+        <button class="btn btn-opn-espresso" type="button" id="btnApplyPromo">Appliquer</button>
+      </div>
+      <div id="promoFeedback" class="small mb-2"></div>
+
+      <!-- Détail financier -->
+      <div class="p-3 rounded-3 mb-3 small" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border);">
+        <div class="d-flex justify-content-between mb-1">
+          <span style="color: var(--opn-espresso-soft);">Sous-total articles</span>
+          <span class="fw-semibold" id="summarySubtotal">0,00 €</span>
+        </div>
+        <div class="d-flex justify-content-between mb-1" id="summaryDiscountRow" style="display: none !important;">
+          <span style="color: var(--opn-olive);">Remise appliquée</span>
+          <span class="fw-semibold" style="color: var(--opn-olive);" id="summaryDiscount">-0,00 €</span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span style="color: var(--opn-espresso-soft);" id="summaryDeliveryLabel">Frais de livraison (Zone Interne)</span>
+          <span class="fw-semibold" style="color: var(--opn-olive);" id="summaryDeliveryFee">Offerte</span>
+        </div>
+        <hr style="border-color: var(--opn-border);" class="my-2">
+        <div class="d-flex justify-content-between align-items-center fs-6 fw-bold">
+          <span>Total TTC à régler</span>
+          <span class="font-heading fs-5" style="color: var(--opn-terracotta);" id="summaryTotalTtc">0,00 €</span>
+        </div>
+      </div>
+
+      <!-- Boutons d'action paiement en ligne ou passerelles -->
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-opn-terracotta btn-lg py-2" id="btnProceedCheckout">
+          <i class="bi bi-credit-card me-1"></i> Régler en ligne (<span id="checkoutBtnAmount">25,40 €</span>)
+        </button>
+        <div class="row g-2">
+          <div class="col-6">
+            <button type="button" class="btn btn-sm btn-ubereats w-100 py-2" onclick="openGatewayModal('ubereats')">
+              Passerelle Uber Eats
+            </button>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-sm btn-deliveroo w-100 py-2" onclick="openGatewayModal('deliveroo')">
+              Passerelle Deliveroo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       OFFCANVAS 2 : CRÉATION DE COMPTE & ESPACE CLIENT BtoC
+       ========================================================================= -->
+  <div class="offcanvas offcanvas-end" style="width: 100%; max-width: 480px;" tabindex="-1" id="offcanvasCompte" aria-labelledby="offcanvasCompteLabel">
+    <div class="offcanvas-header" style="border-bottom: 1px solid var(--opn-border);">
+      <h5 class="offcanvas-title fw-bold font-heading" id="offcanvasCompteLabel">Compte Client &amp; Fidélité</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+
+      <!-- VUE 1 : NON CONNECTÉ -->
+      <div id="accountLoggedOutView">
+        <div class="p-3 rounded-3 mb-3" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border-strong);">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="fw-bold small" style="color: var(--opn-espresso);">Compte Démo Pré-rempli</div>
+              <div class="small" style="color: var(--opn-espresso-soft);">Charger le profil étudiant (Lucas Martin)</div>
+            </div>
+            <button type="button" class="btn btn-opn-espresso btn-sm" id="btnQuickDemoLogin">
+              Charger le profil
+            </button>
+          </div>
+        </div>
+
+        <!-- Onglets : Créer un compte / Se connecter -->
+        <div class="d-flex gap-2 mb-3">
+          <button class="btn btn-opn-espresso flex-fill py-2" id="tab-register" data-bs-toggle="pill" data-bs-target="#pane-register" type="button">
+            Créer un compte
+          </button>
+          <button class="btn btn-opn-outline flex-fill py-2" id="tab-login" data-bs-toggle="pill" data-bs-target="#pane-login" type="button">
+            Se connecter
+          </button>
+        </div>
+
+        <div class="tab-content">
+          <!-- Formulaire de Création de Compte -->
+          <div class="tab-pane fade show active" id="pane-register" role="tabpanel">
+            <form id="registerForm">
+              <div class="row g-2 mb-2">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold mb-1" for="regPrenom">Prénom *</label>
+                  <input type="text" class="form-control form-control-sm" id="regPrenom" required placeholder="Lucas">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold mb-1" for="regNom">Nom *</label>
+                  <input type="text" class="form-control form-control-sm" id="regNom" required placeholder="Martin">
+                </div>
+              </div>
+              <div class="mb-2">
+                <label class="form-label small fw-semibold mb-1" for="regEmail">Adresse email *</label>
+                <input type="email" class="form-control form-control-sm" id="regEmail" required placeholder="lucas.martin@etudiant.uvsq.fr">
+              </div>
+              <div class="mb-2">
+                <label class="form-label small fw-semibold mb-1" for="regTel">Téléphone mobile *</label>
+                <input type="tel" class="form-control form-control-sm" id="regTel" required placeholder="06 52 84 19 30">
+              </div>
+              <div class="mb-2">
+                <label class="form-label small fw-semibold mb-1" for="regAdresse">Adresse de livraison *</label>
+                <input type="text" class="form-control form-control-sm" id="regAdresse" required placeholder="28 Avenue Émile Cossonneau">
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-5">
+                  <label class="form-label small fw-semibold mb-1" for="regCp">Code Postal *</label>
+                  <input type="text" class="form-control form-control-sm" id="regCp" required placeholder="93160">
+                </div>
+                <div class="col-7">
+                  <label class="form-label small fw-semibold mb-1" for="regVille">Ville *</label>
+                  <input type="text" class="form-control form-control-sm" id="regVille" required placeholder="Noisy-le-Grand">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small fw-semibold mb-1" for="regPassword">Mot de passe *</label>
+                <input type="password" class="form-control form-control-sm" id="regPassword" required minlength="6" placeholder="••••••••">
+              </div>
+              <button type="submit" class="btn btn-opn-terracotta w-100 py-2">
+                Créer mon compte client (+50 pts fidélité)
+              </button>
+            </form>
+          </div>
+
+          <!-- Formulaire de Connexion -->
+          <div class="tab-pane fade" id="pane-login" role="tabpanel">
+            <form id="loginForm">
+              <div class="mb-3">
+                <label class="form-label small fw-semibold mb-1" for="loginEmail">Email client</label>
+                <input type="email" class="form-control" id="loginEmail" required value="lucas.martin@etudiant.uvsq.fr">
+              </div>
+              <div class="mb-3">
+                <label class="form-label small fw-semibold mb-1" for="loginPassword">Mot de passe</label>
+                <input type="password" class="form-control" id="loginPassword" required value="optinoisy2026">
+              </div>
+              <button type="submit" class="btn btn-opn-terracotta w-100 py-2">
+                Se connecter
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- VUE 2 : CLIENT CONNECTÉ -->
+      <div id="accountLoggedInView" class="d-none">
+        <div class="p-3 rounded-3 mb-3" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border);">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 44px; height: 44px; background: var(--opn-espresso); color: #fff;" id="userAvatarInitials">LM</div>
+              <div>
+                <h6 class="fw-bold mb-0 font-heading" id="userFullName">Lucas Martin</h6>
+                <small style="color: var(--opn-espresso-soft);" id="userEmailDisplay">lucas.martin@etudiant.uvsq.fr</small>
+              </div>
+            </div>
+            <button type="button" class="btn btn-opn-outline btn-sm" id="btnLogout">Déconnexion</button>
+          </div>
+          <div class="small mt-2" style="color: var(--opn-espresso-soft);">
+            <div><i class="bi bi-telephone me-1"></i> <span id="userPhoneDisplay">06 52 84 19 30</span></div>
+            <div><i class="bi bi-geo-alt me-1"></i> <span id="userAddressDisplay">28 Avenue Émile Cossonneau, 93160 Noisy-le-Grand</span></div>
+          </div>
+        </div>
+
+        <!-- Carte de fidélité O'Pti Noisy -->
+        <div class="p-3 rounded-3 mb-3" style="background: var(--opn-espresso); color: var(--opn-paper-surface);">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="fw-bold small font-heading">Programme Fidélité O'Pti Noisy</span>
+            <span class="badge" style="background: var(--opn-terracotta); color: #fff;" id="userPointsBadge">85 / 100 pts</span>
+          </div>
+          <div class="progress my-2" style="height: 7px; background: rgba(255,255,255,0.2);">
+            <div class="progress-bar" role="progressbar" style="width: 85%; background-color: #F6F1E9;" id="userPointsBar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <small class="opacity-75">Plus que 15 points pour obtenir <strong>1 Pizza Junior 26 cm offerte</strong>.</small>
+        </div>
+
+        <!-- Historique des commandes -->
+        <h6 class="fw-bold font-heading mb-2">Historique des commandes</h6>
+        <div id="userOrderHistoryList" class="d-flex flex-column gap-2"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODALE 1 : PERSONNALISATION DE PIZZA (TAILLE 26/31/40cm + BASE + SUPPLÉMENTS)
+       ========================================================================= -->
+  <div class="modal fade" id="modalCustomizePizza" tabindex="-1" aria-labelledby="modalCustomizePizzaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border: 1px solid var(--opn-border-strong);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--opn-border);">
+          <h5 class="modal-title fw-bold font-heading" id="modalCustomizePizzaLabel">Personnaliser ma Pizza</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="custProductId">
+
+          <!-- Étape 1 : Choix de la taille avec SVG -->
+          <div class="mb-3">
+            <label class="form-label fw-bold small">1. Format de la pâte (26, 31 ou 40 cm) :</label>
+            <div class="opn-size-selector" id="modalSizeSelector"></div>
+          </div>
+
+          <!-- Étape 2 : Choix de la base -->
+          <div class="mb-3">
+            <label class="form-label fw-bold small" for="modalBaseSelect">2. Base artisanale :</label>
+            <select id="modalBaseSelect" class="form-select form-select-sm"></select>
+          </div>
+
+          <!-- Étape 3 : Suppléments -->
+          <div class="mb-2">
+            <label class="form-label fw-bold small">3. Garnitures supplémentaires (optionnel) :</label>
+            <div id="modalSupplementsList" class="d-flex flex-column gap-1"></div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between" style="border-top: 1px solid var(--opn-border);">
+          <div>
+            <small class="d-block" style="color: var(--opn-espresso-soft);">Total recette :</small>
+            <span class="fs-5 fw-bold font-heading" style="color: var(--opn-terracotta);" id="modalComputedPrice">13,40 €</span>
+          </div>
+          <button type="button" class="btn btn-opn-terracotta px-4" id="btnConfirmCustomPizza">
+            Ajouter au panier
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODALE 2 : PAIEMENT EN LIGNE SÉCURISÉ & SUIVI DE COMMANDE EN DIRECT
+       ========================================================================= -->
+  <div class="modal fade" id="modalCheckout" tabindex="-1" aria-labelledby="modalCheckoutLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content" style="border: 1px solid var(--opn-border-strong);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--opn-border);">
+          <h5 class="modal-title fw-bold font-heading" id="modalCheckoutLabel">Paiement en Ligne Sécurisé</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+
+          <!-- ÉTAPE A : FORMULAIRE DE PAIEMENT -->
+          <div id="paymentStepForm">
+            <div class="opn-credit-card-preview mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="small fw-semibold text-uppercase opacity-75">O'Pti Noisy • 3D Secure</span>
+                <i class="bi bi-shield-check fs-5"></i>
+              </div>
+              <div class="fs-5 fw-bold font-monospace mb-3" id="cardPreviewNumber">4970 1234 5678 2026</div>
+              <div class="d-flex justify-content-between small">
+                <div>
+                  <div class="opacity-75" style="font-size: 0.65rem;">TITULAIRE</div>
+                  <div class="fw-bold" id="cardPreviewHolder">LUCAS MARTIN</div>
+                </div>
+                <div>
+                  <div class="opacity-75" style="font-size: 0.65rem;">EXPIRE FIN</div>
+                  <div class="fw-bold" id="cardPreviewExpiry">10/28</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-group w-100 mb-3" role="group" aria-label="Méthode de paiement">
+              <input type="radio" class="btn-check" name="payMethod" id="payMethodCb" checked>
+              <label class="btn btn-opn-outline btn-sm" for="payMethodCb"><i class="bi bi-credit-card me-1"></i>Carte Bancaire</label>
+
+              <input type="radio" class="btn-check" name="payMethod" id="payMethodApple">
+              <label class="btn btn-opn-outline btn-sm" for="payMethodApple"><i class="bi bi-apple me-1"></i>Apple Pay</label>
+
+              <input type="radio" class="btn-check" name="payMethod" id="payMethodGoogle">
+              <label class="btn btn-opn-outline btn-sm" for="payMethodGoogle"><i class="bi bi-google me-1"></i>Google Pay</label>
+            </div>
+
+            <form id="onlinePaymentForm">
+              <div class="mb-2">
+                <label class="form-label small fw-semibold mb-1" for="inputCardHolder">Nom du titulaire *</label>
+                <input type="text" class="form-control form-control-sm" id="inputCardHolder" required value="LUCAS MARTIN">
+              </div>
+              <div class="mb-2">
+                <label class="form-label small fw-semibold mb-1" for="inputCardNumber">Numéro de carte *</label>
+                <input type="text" class="form-control form-control-sm font-monospace" id="inputCardNumber" required maxlength="19" value="4970 1234 5678 2026">
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold mb-1" for="inputCardExpiry">Expiration (MM/AA) *</label>
+                  <input type="text" class="form-control form-control-sm font-monospace" id="inputCardExpiry" required maxlength="5" value="10/28">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold mb-1" for="inputCardCvv">Code CVV *</label>
+                  <input type="password" class="form-control form-control-sm font-monospace" id="inputCardCvv" required maxlength="3" value="842">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-opn-terracotta w-100 py-2">
+                <i class="bi bi-lock-fill me-1"></i> Confirmer et régler <span id="payModalSubmitAmount">25,40 €</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- ÉTAPE B : CONFIRMATION & TRACKER DE LIVRAISON EN DIRECT -->
+          <div id="paymentStepSuccess" class="d-none text-center py-2">
+            <div class="display-5 mb-2" style="color: var(--opn-olive);"><i class="bi bi-check2-circle"></i></div>
+            <h5 class="fw-bold font-heading">Commande Enregistrée</h5>
+            <p class="small mb-2" style="color: var(--opn-espresso-soft);">
+              Référence de suivi : <strong style="color: var(--opn-terracotta);" id="confirmedOrderNumber">OPN-2026-894</strong>
+            </p>
+
+            <div class="text-start my-3">
+              <div class="opn-tracker-step done" id="trackStep1">
+                <i class="bi bi-check-circle-fill fs-5" style="color: var(--opn-olive);"></i>
+                <div>
+                  <div class="fw-bold small">1. Règlement en ligne validé</div>
+                  <small style="color: var(--opn-espresso-soft);">Transaction bancaire acceptée</small>
+                </div>
+              </div>
+              <div class="opn-tracker-step current" id="trackStep2">
+                <i class="bi bi-fire fs-5" style="color: var(--opn-terracotta);"></i>
+                <div>
+                  <div class="fw-bold small">2. Enfourne au four à bois (400 °C)</div>
+                  <small style="color: var(--opn-espresso-soft);">Façonnage et cuisson minute</small>
+                </div>
+              </div>
+              <div class="opn-tracker-step" id="trackStep3">
+                <i class="bi bi-bicycle fs-5" style="color: var(--opn-espresso-soft);"></i>
+                <div>
+                  <div class="fw-bold small">3. Livraison géolocalisée en route</div>
+                  <small style="color: var(--opn-espresso-soft);" id="trackStep3Sub">Arrivée estimée dans 20 min</small>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-opn-espresso btn-sm px-4" data-bs-dismiss="modal">
+              Retourner à la carte
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODALE 3 : PASSERELLE EXTERNE UBER EATS / DELIVEROO
+       ========================================================================= -->
+  <div class="modal fade" id="modalExternalGateway" tabindex="-1" aria-labelledby="modalGatewayTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border: 1px solid var(--opn-border-strong);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--opn-border);">
+          <h5 class="modal-title fw-bold font-heading" id="modalGatewayTitle">Passerelle Partenaire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div id="gatewayModalBadge" class="badge fs-6 px-3 py-2 rounded-2 mb-3">UBER EATS</div>
+          <h6 class="fw-bold font-heading" id="gatewayModalHeading">Redirection vers la boutique officielle O'Pti Noisy</h6>
+          <p class="small" style="color: var(--opn-espresso-soft);" id="gatewayModalDesc"></p>
+
+          <div class="p-3 rounded-3 text-start small mb-3" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border);">
+            <div class="d-flex justify-content-between mb-1">
+              <span style="color: var(--opn-espresso-soft);">Panier synchronisé :</span>
+              <span class="fw-bold" id="gatewayCartCount">2 articles</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span style="color: var(--opn-espresso-soft);">Délai coursier partenaire :</span>
+              <span class="fw-bold" style="color: var(--opn-terracotta);" id="gatewayEta">20 - 30 min</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span style="color: var(--opn-espresso-soft);">Frais de livraison partenaire :</span>
+              <span class="fw-bold" id="gatewayFee">3,49 €</span>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <a href="https://www.ubereats.com/fr" target="_blank" rel="noopener noreferrer" class="btn btn-lg fw-bold rounded-2" id="gatewayExternalLink">
+              Ouvrir la plateforme partenaire <i class="bi bi-box-arrow-up-right ms-1"></i>
+            </a>
+            <button type="button" class="btn btn-sm btn-opn-outline" data-bs-dismiss="modal" onclick="selectDeliveryMode('livraison_interne')">
+              Préférer la livraison interne O'Pti Noisy (offerte dès 18 €)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION BOOTSTRAP -->
+  <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1090;">
+    <div id="appToast" class="toast align-items-center border-0 rounded-2 px-2" style="background: var(--opn-espresso); color: #fff;" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fw-semibold small" id="appToastMessage">
+          Recette ajoutée au panier
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="../shared/data.js?v=3"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app-bootstrap.js?v=3"></script>
+</body>
+</html>

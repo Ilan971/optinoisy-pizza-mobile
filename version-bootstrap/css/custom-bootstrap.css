@@ -1,0 +1,622 @@
+/**
+ * O'PTI NOISY PIZZA — Direction Artistique "Trattoria Éditoriale" (Bootstrap 5)
+ * Palette : Crème Farine (#F6F1E9), Papier Artisanal (#FFFDF9), Brun Espresso SVG (#432918), Terracotta Mat (#B83A24)
+ * Zéro dégradé artificiel • Zéro ombre néon • Typographie éditoriale Fraunces & Plus Jakarta Sans
+ */
+
+:root {
+  --opn-cream-bg: #F6F1E9;
+  --opn-paper-surface: #FFFDF9;
+  --opn-sand-muted: #ECE3D5;
+  --opn-espresso: #432918;
+  --opn-espresso-soft: #6E5544;
+  --opn-terracotta: #B83A24;
+  --opn-terracotta-hover: #962D1A;
+  --opn-olive: #2E4A36;
+  --opn-olive-bg: #E6EFE8;
+  --opn-ubereats: #06C167;
+  --opn-deliveroo: #00A396;
+  --opn-border: rgba(67, 41, 24, 0.16);
+  --opn-border-strong: rgba(67, 41, 24, 0.32);
+}
+
+body {
+  background-color: #24150C;
+  color: var(--opn-espresso);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding-bottom: 84px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, .font-heading {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--opn-espresso);
+  letter-spacing: -0.02em;
+}
+
+/* Coque Mobile-First centrée sur fond marron foncé pour attirer l'œil sur l'écran */
+.mobile-app-shell {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: var(--opn-cream-bg);
+  position: relative;
+  border-left: 1px solid rgba(255, 253, 249, 0.14);
+  border-right: 1px solid rgba(255, 253, 249, 0.14);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.65);
+}
+
+/* Header Mobile Éditorial (100% identique à la version W3C .w3c-header) */
+.opn-top-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background-color: var(--opn-cream-bg);
+  border-bottom: 1px solid var(--opn-border);
+}
+
+.opn-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--opn-espresso);
+}
+
+.opn-brand-monogram {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background-color: var(--opn-espresso);
+  color: var(--opn-paper-surface);
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.opn-brand-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  display: block;
+  color: var(--opn-espresso);
+}
+
+.opn-brand-subtitle {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--opn-terracotta);
+  font-weight: 700;
+  display: block;
+  line-height: 1.5;
+}
+
+.opn-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.opn-header-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.68rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.opn-header-btn-outline {
+  background-color: var(--opn-paper-surface);
+  color: var(--opn-espresso);
+  border-color: var(--opn-border-strong);
+}
+
+.opn-header-btn-outline:hover {
+  background-color: var(--opn-sand-muted);
+  color: var(--opn-espresso);
+}
+
+.opn-header-btn-espresso {
+  background-color: var(--opn-espresso);
+  color: #ffffff;
+  border-color: var(--opn-espresso);
+}
+
+.opn-header-btn-espresso:hover {
+  background-color: #2D1B0F;
+  color: #ffffff;
+}
+
+.opn-svg-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* Boutons Éditoriaux Mats */
+.btn-opn-terracotta {
+  background-color: var(--opn-terracotta);
+  color: #FFFFFF;
+  border: 1px solid var(--opn-terracotta);
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.btn-opn-terracotta:hover,
+.btn-opn-terracotta:focus {
+  background-color: var(--opn-terracotta-hover);
+  border-color: var(--opn-terracotta-hover);
+  color: #FFFFFF;
+}
+
+.btn-opn-espresso {
+  background-color: var(--opn-espresso);
+  color: #FFFFFF;
+  border: 1px solid var(--opn-espresso);
+  font-weight: 600;
+}
+
+.btn-opn-espresso:hover {
+  background-color: #2D1B0F;
+  color: #FFFFFF;
+}
+
+.btn-opn-outline {
+  background-color: var(--opn-paper-surface);
+  color: var(--opn-espresso);
+  border: 1px solid var(--opn-border-strong);
+  font-weight: 600;
+}
+
+.btn-opn-outline:hover {
+  background-color: var(--opn-sand-muted);
+  color: var(--opn-espresso);
+  border-color: var(--opn-espresso);
+}
+
+/* Hero Carousel Mobile : 100% identique à la version W3C (.w3c-hero & .w3c-hero-overlay) */
+.opn-hero-slide {
+  position: relative;
+  height: 390px;
+  overflow: hidden;
+  background-color: #0D0B0A;
+  border-bottom: 1px solid var(--opn-border);
+}
+
+.opn-hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.opn-hero-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(13, 11, 10, 0.42);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.35rem 1.35rem 2.35rem;
+}
+
+.opn-hero-tag {
+  display: inline-block;
+  padding: 0.24rem 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  background-color: var(--opn-paper-surface);
+  color: var(--opn-espresso);
+  border: 1px solid var(--opn-border-strong);
+}
+
+.opn-hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0 0 0.35rem 0;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.opn-hero-subtitle {
+  font-size: 0.82rem;
+  color: #f0ebe3;
+  margin: 0 0 0.85rem 0;
+  line-height: 1.5;
+}
+
+.opn-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.84rem;
+  background-color: var(--opn-terracotta);
+  color: #ffffff;
+  border: 1px solid var(--opn-terracotta);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.opn-hero-cta:hover {
+  background-color: var(--opn-terracotta-hover);
+  color: #ffffff;
+}
+
+/* Bandeau Mode de Réception & Passerelles */
+.opn-delivery-strip {
+  background-color: var(--opn-paper-surface);
+  border-bottom: 1px solid var(--opn-border);
+}
+
+.opn-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--opn-olive-bg);
+  color: var(--opn-olive);
+  border: 1px solid rgba(46, 74, 54, 0.25);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+.opn-mode-pill {
+  border: 1px solid var(--opn-border);
+  background-color: var(--opn-cream-bg);
+  color: var(--opn-espresso);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.opn-mode-pill.active-interne {
+  background-color: var(--opn-espresso);
+  border-color: var(--opn-espresso);
+  color: #FFFFFF;
+}
+
+.opn-mode-pill.active-ubereats {
+  background-color: #06C167;
+  border-color: #06C167;
+  color: #051B10;
+}
+
+.opn-mode-pill.active-deliveroo {
+  background-color: #00CCBC;
+  border-color: #00CCBC;
+  color: #032220;
+}
+
+/* Légende des 3 Tailles SVG (#432918 sur fond Crème) */
+.opn-sizes-banner {
+  background-color: var(--opn-paper-surface);
+  border: 1px solid var(--opn-border);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.opn-size-legend-box {
+  background-color: var(--opn-cream-bg);
+  border: 1px solid var(--opn-border);
+  border-radius: 8px;
+  padding: 0.45rem 0.25rem;
+}
+
+/* Navigation Catégories Sticky */
+.opn-cat-scroller {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0.65rem 1rem;
+  background-color: var(--opn-cream-bg);
+  border-bottom: 1px solid var(--opn-border);
+}
+
+.opn-cat-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.opn-cat-btn {
+  white-space: nowrap;
+  border-radius: 6px;
+  padding: 0.42rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid var(--opn-border-strong);
+  background-color: var(--opn-paper-surface);
+  color: var(--opn-espresso);
+  transition: all 0.15s ease;
+}
+
+.opn-cat-btn.active,
+.opn-cat-btn:hover {
+  background-color: var(--opn-espresso);
+  border-color: var(--opn-espresso);
+  color: #FFFFFF;
+}
+
+/* Cartes Produits Trattoria Éditoriale */
+.opn-product-card {
+  background-color: var(--opn-paper-surface);
+  border: 1px solid var(--opn-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.opn-product-card:hover {
+  border-color: var(--opn-espresso);
+}
+
+.opn-product-img-wrap {
+  position: relative;
+  height: 190px;
+  background-color: #14100E;
+  overflow: hidden;
+  border-bottom: 1px solid var(--opn-border);
+}
+
+.opn-product-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 75%;
+}
+
+.opn-badge-editorial {
+  background-color: var(--opn-paper-surface);
+  color: var(--opn-espresso);
+  border: 1px solid var(--opn-border-strong);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+}
+
+.opn-badge-rating {
+  background-color: var(--opn-espresso);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  border-radius: 4px;
+}
+
+.opn-price-tag {
+  font-family: 'Fraunces', serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--opn-terracotta);
+}
+
+/* Sélecteur de Tailles de Pizzas avec les SVG Officiels (#432918 et #FFFFFF) */
+.opn-size-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.opn-size-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.25rem;
+  border-radius: 8px;
+  background-color: var(--opn-cream-bg);
+  color: var(--opn-espresso);
+  border: 1px solid var(--opn-border-strong);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.opn-size-btn img.opn-size-svg {
+  height: 28px;
+  width: auto;
+  margin-bottom: 3px;
+}
+
+.opn-size-btn .size-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.opn-size-btn .size-price {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* État sélectionné : Fond Brun Espresso #432918 (ou Terracotta) + SVG Blanc (#FFFFFF) */
+.opn-size-btn.active {
+  background-color: var(--opn-espresso);
+  color: #FFFFFF;
+  border-color: var(--opn-espresso);
+}
+
+/* Carte Géolocalisation Leaflet */
+#bootstrapGeoMap {
+  width: 100%;
+  height: 230px;
+  border-radius: 10px;
+  border: 1px solid var(--opn-border-strong);
+  z-index: 1;
+}
+
+/* Boutons Passerelles Uber Eats & Deliveroo Mats */
+.btn-ubereats {
+  background-color: #06C167;
+  color: #051B10;
+  font-weight: 700;
+  border: 1px solid #059E54;
+}
+
+.btn-ubereats:hover {
+  background-color: #05A859;
+  color: #051B10;
+}
+
+.btn-deliveroo {
+  background-color: #00CCBC;
+  color: #032220;
+  font-weight: 700;
+  border: 1px solid #00A89B;
+}
+
+.btn-deliveroo:hover {
+  background-color: #00B3A5;
+  color: #032220;
+}
+
+/* Carte bancaire sobre dans le tunnel de paiement */
+.opn-credit-card-preview {
+  background-color: var(--opn-espresso);
+  border-radius: 12px;
+  padding: 1.15rem;
+  color: var(--opn-paper-surface);
+  border: 1px solid var(--opn-border-strong);
+}
+
+/* Barre de Navigation Mobile Basse (Bottom Tab Bar Éditoriale) */
+.opn-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--opn-paper-surface);
+  border-top: 1px solid var(--opn-border-strong);
+  z-index: 1035;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0.4rem 0.35rem 0.5rem;
+}
+
+.opn-bottom-tab {
+  background: transparent;
+  border: none;
+  color: var(--opn-espresso-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem;
+  position: relative;
+}
+
+.opn-bottom-tab i {
+  font-size: 1.15rem;
+}
+
+.opn-bottom-tab.active {
+  color: var(--opn-terracotta);
+  font-weight: 700;
+}
+
+.opn-cart-floating-badge {
+  position: absolute;
+  top: 0;
+  right: 22%;
+  background-color: var(--opn-terracotta);
+  color: #FFFFFF;
+  font-size: 0.64rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
+/* Tracker de suivi de commande en direct */
+.opn-tracker-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 8px;
+  background-color: var(--opn-cream-bg);
+  margin-bottom: 0.5rem;
+  border-left: 4px solid var(--opn-border-strong);
+}
+
+.opn-tracker-step.done {
+  border-left-color: var(--opn-olive);
+  background-color: var(--opn-olive-bg);
+}
+
+.opn-tracker-step.current {
+  border-left-color: var(--opn-terracotta);
+  background-color: #FDF2EF;
+}
+
+/* Ajustements des champs de formulaire sur fond Crème */
+.form-control,
+.form-select {
+  background-color: var(--opn-paper-surface);
+  border-color: var(--opn-border-strong);
+  color: var(--opn-espresso);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #FFFFFF;
+  border-color: var(--opn-espresso);
+  color: var(--opn-espresso);
+  box-shadow: 0 0 0 2px rgba(67, 41, 24, 0.15);
+}
+
+.offcanvas,
+.modal-content {
+  background-color: var(--opn-cream-bg);
+  color: var(--opn-espresso);
+}
