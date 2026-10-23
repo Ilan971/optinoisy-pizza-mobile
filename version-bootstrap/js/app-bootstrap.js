@@ -624,10 +624,10 @@
     const restoCoords = [DATA.restaurant.coords.lat, DATA.restaurant.coords.lng];
     leafletMap = L.map("bootstrapGeoMap").setView(restoCoords, 13);
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      subdomains: "abcd",
+    L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
+      subdomains: "abc",
       maxZoom: 19,
-      attribution: "© OpenStreetMap • © CARTO"
+      attribution: "© OpenStreetMap France"
     }).addTo(leafletMap);
 
     L.marker(restoCoords)
