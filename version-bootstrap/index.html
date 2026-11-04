@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
   <!-- Styles personnalisés O'Pti Noisy (Direction Trattoria Éditoriale) -->
-  <link rel="stylesheet" href="css/custom-bootstrap.css">
+  <link rel="stylesheet" href="css/custom-bootstrap.css?v=5">
 </head>
 <body>
 
@@ -41,7 +41,7 @@
         <a href="../index.html" class="opn-header-btn opn-header-btn-outline" title="Retour au portail comparatif">
           Portail
         </a>
-        <button type="button" class="opn-header-btn opn-header-btn-espresso" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCompte" id="headerAccountBtn">
+        <button type="button" class="opn-header-btn opn-header-btn-espresso" id="headerAccountBtn">
           <svg class="opn-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span id="headerAccountLabel">Connexion</span>
         </button>
@@ -249,7 +249,7 @@
         <span class="opn-cart-floating-badge" id="bottomCartCount">2</span>
         <span id="bottomCartTotal">25,40 €</span>
       </button>
-      <button type="button" class="opn-bottom-tab" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCompte" id="navTabAccount">
+      <button type="button" class="opn-bottom-tab" id="navTabAccount">
         <i class="bi bi-person"></i>
         <span id="bottomAccountLabel">Compte</span>
       </button>
@@ -325,142 +325,122 @@
   </div>
 
   <!-- =========================================================================
-       OFFCANVAS 2 : CRÉATION DE COMPTE & ESPACE CLIENT BtoC
+       DIALOG : CRÉATION DE COMPTE & ESPACE CLIENT BtoC (IDENTIQUE VERSION W3C)
        ========================================================================= -->
-  <div class="offcanvas offcanvas-end" style="width: 100%; max-width: 480px;" tabindex="-1" id="offcanvasCompte" aria-labelledby="offcanvasCompteLabel">
-    <div class="offcanvas-header" style="border-bottom: 1px solid var(--opn-border);">
-      <h5 class="offcanvas-title fw-bold font-heading" id="offcanvasCompteLabel">Compte Client &amp; Fidélité</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+  <dialog class="w3c-dialog" id="dialogAccount" aria-labelledby="dialogAccountTitle">
+    <div class="w3c-dialog-header">
+      <h2 id="dialogAccountTitle" style="font-size: 1.05rem; margin: 0;">Compte Client &amp; Fidélité</h2>
+      <button type="button" class="w3c-close-btn" id="btnCloseAccount" aria-label="Fermer">✕</button>
     </div>
-    <div class="offcanvas-body">
+    <div class="w3c-dialog-body">
 
-      <!-- VUE 1 : NON CONNECTÉ -->
-      <div id="accountLoggedOutView">
-        <div class="p-3 rounded-3 mb-3" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border-strong);">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <div class="fw-bold small" style="color: var(--opn-espresso);">Compte Démo Pré-rempli</div>
-              <div class="small" style="color: var(--opn-espresso-soft);">Charger le profil étudiant (Lucas Martin)</div>
-            </div>
-            <button type="button" class="btn btn-opn-espresso btn-sm" id="btnQuickDemoLogin">
-              Charger le profil
-            </button>
+      <!-- VUE DÉCONNECTÉ -->
+      <div id="w3cAccountLoggedOut">
+        <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--surface-paper); border: 1px solid var(--border-strong); margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--espresso);">Compte Démo Pré-rempli</div>
+            <div style="font-size: 0.72rem; color: var(--espresso-soft);">Charger le profil Lucas Martin</div>
           </div>
+          <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-espresso" id="w3cBtnDemoLogin">Charger</button>
         </div>
 
-        <!-- Onglets : Créer un compte / Se connecter -->
-        <div class="d-flex gap-2 mb-3">
-          <button class="btn btn-opn-espresso flex-fill py-2" id="tab-register" data-bs-toggle="pill" data-bs-target="#pane-register" type="button">
-            Créer un compte
+        <div class="w3c-form-row" style="margin-bottom: 0.85rem;">
+          <button type="button" class="w3c-btn w3c-btn-espresso" id="w3cTabBtnRegister">Créer un compte</button>
+          <button type="button" class="w3c-btn w3c-btn-outline" id="w3cTabBtnLogin">Se connecter</button>
+        </div>
+
+        <!-- Formulaire Inscription -->
+        <form id="w3cRegisterForm">
+          <div class="w3c-form-row">
+            <div class="w3c-form-group">
+              <label for="w3cRegPrenom" class="w3c-label">Prénom *</label>
+              <input type="text" id="w3cRegPrenom" class="w3c-input" required placeholder="Lucas">
+            </div>
+            <div class="w3c-form-group">
+              <label for="w3cRegNom" class="w3c-label">Nom *</label>
+              <input type="text" id="w3cRegNom" class="w3c-input" required placeholder="Martin">
+            </div>
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegEmail" class="w3c-label">Email *</label>
+            <input type="email" id="w3cRegEmail" class="w3c-input" required placeholder="lucas.martin@etudiant.uvsq.fr">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegTel" class="w3c-label">Téléphone mobile *</label>
+            <input type="tel" id="w3cRegTel" class="w3c-input" required placeholder="06 52 84 19 30">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegAdresse" class="w3c-label">Adresse de livraison *</label>
+            <input type="text" id="w3cRegAdresse" class="w3c-input" required placeholder="28 Avenue Émile Cossonneau">
+          </div>
+          <div class="w3c-form-row">
+            <div class="w3c-form-group">
+              <label for="w3cRegCp" class="w3c-label">Code Postal *</label>
+              <input type="text" id="w3cRegCp" class="w3c-input" required placeholder="93160">
+            </div>
+            <div class="w3c-form-group">
+              <label for="w3cRegVille" class="w3c-label">Ville *</label>
+              <input type="text" id="w3cRegVille" class="w3c-input" required placeholder="Noisy-le-Grand">
+            </div>
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cRegPass" class="w3c-label">Mot de passe *</label>
+            <input type="password" id="w3cRegPass" class="w3c-input" required minlength="6" placeholder="••••••••">
+          </div>
+          <button type="submit" class="w3c-btn w3c-btn-terracotta w3c-btn-block">
+            Créer mon compte client (+50 pts offerts)
           </button>
-          <button class="btn btn-opn-outline flex-fill py-2" id="tab-login" data-bs-toggle="pill" data-bs-target="#pane-login" type="button">
+        </form>
+
+        <!-- Formulaire Connexion -->
+        <form id="w3cLoginForm" class="hidden">
+          <div class="w3c-form-group">
+            <label for="w3cLoginEmail" class="w3c-label">Email client *</label>
+            <input type="email" id="w3cLoginEmail" class="w3c-input" required value="lucas.martin@etudiant.uvsq.fr">
+          </div>
+          <div class="w3c-form-group">
+            <label for="w3cLoginPass" class="w3c-label">Mot de passe *</label>
+            <input type="password" id="w3cLoginPass" class="w3c-input" required value="optinoisy2026">
+          </div>
+          <button type="submit" class="w3c-btn w3c-btn-terracotta w3c-btn-block">
             Se connecter
           </button>
-        </div>
-
-        <div class="tab-content">
-          <!-- Formulaire de Création de Compte -->
-          <div class="tab-pane fade show active" id="pane-register" role="tabpanel">
-            <form id="registerForm">
-              <div class="row g-2 mb-2">
-                <div class="col-6">
-                  <label class="form-label small fw-semibold mb-1" for="regPrenom">Prénom *</label>
-                  <input type="text" class="form-control form-control-sm" id="regPrenom" required placeholder="Lucas">
-                </div>
-                <div class="col-6">
-                  <label class="form-label small fw-semibold mb-1" for="regNom">Nom *</label>
-                  <input type="text" class="form-control form-control-sm" id="regNom" required placeholder="Martin">
-                </div>
-              </div>
-              <div class="mb-2">
-                <label class="form-label small fw-semibold mb-1" for="regEmail">Adresse email *</label>
-                <input type="email" class="form-control form-control-sm" id="regEmail" required placeholder="lucas.martin@etudiant.uvsq.fr">
-              </div>
-              <div class="mb-2">
-                <label class="form-label small fw-semibold mb-1" for="regTel">Téléphone mobile *</label>
-                <input type="tel" class="form-control form-control-sm" id="regTel" required placeholder="06 52 84 19 30">
-              </div>
-              <div class="mb-2">
-                <label class="form-label small fw-semibold mb-1" for="regAdresse">Adresse de livraison *</label>
-                <input type="text" class="form-control form-control-sm" id="regAdresse" required placeholder="28 Avenue Émile Cossonneau">
-              </div>
-              <div class="row g-2 mb-3">
-                <div class="col-5">
-                  <label class="form-label small fw-semibold mb-1" for="regCp">Code Postal *</label>
-                  <input type="text" class="form-control form-control-sm" id="regCp" required placeholder="93160">
-                </div>
-                <div class="col-7">
-                  <label class="form-label small fw-semibold mb-1" for="regVille">Ville *</label>
-                  <input type="text" class="form-control form-control-sm" id="regVille" required placeholder="Noisy-le-Grand">
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label small fw-semibold mb-1" for="regPassword">Mot de passe *</label>
-                <input type="password" class="form-control form-control-sm" id="regPassword" required minlength="6" placeholder="••••••••">
-              </div>
-              <button type="submit" class="btn btn-opn-terracotta w-100 py-2">
-                Créer mon compte client (+50 pts fidélité)
-              </button>
-            </form>
-          </div>
-
-          <!-- Formulaire de Connexion -->
-          <div class="tab-pane fade" id="pane-login" role="tabpanel">
-            <form id="loginForm">
-              <div class="mb-3">
-                <label class="form-label small fw-semibold mb-1" for="loginEmail">Email client</label>
-                <input type="email" class="form-control" id="loginEmail" required value="lucas.martin@etudiant.uvsq.fr">
-              </div>
-              <div class="mb-3">
-                <label class="form-label small fw-semibold mb-1" for="loginPassword">Mot de passe</label>
-                <input type="password" class="form-control" id="loginPassword" required value="optinoisy2026">
-              </div>
-              <button type="submit" class="btn btn-opn-terracotta w-100 py-2">
-                Se connecter
-              </button>
-            </form>
-          </div>
-        </div>
+        </form>
       </div>
 
-      <!-- VUE 2 : CLIENT CONNECTÉ -->
-      <div id="accountLoggedInView" class="d-none">
-        <div class="p-3 rounded-3 mb-3" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border);">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <div class="d-flex align-items-center gap-2">
-              <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 44px; height: 44px; background: var(--opn-espresso); color: #fff;" id="userAvatarInitials">LM</div>
-              <div>
-                <h6 class="fw-bold mb-0 font-heading" id="userFullName">Lucas Martin</h6>
-                <small style="color: var(--opn-espresso-soft);" id="userEmailDisplay">lucas.martin@etudiant.uvsq.fr</small>
-              </div>
+      <!-- VUE CONNECTÉ -->
+      <div id="w3cAccountLoggedIn" class="hidden">
+        <div style="padding: 0.85rem; border-radius: var(--radius-sm); background: var(--surface-paper); border: 1px solid var(--border-subtle); margin-bottom: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong id="w3cUserFullName" style="font-family: var(--font-heading); font-size: 1rem;">Lucas Martin</strong>
+              <div id="w3cUserEmail" style="font-size: 0.76rem; color: var(--espresso-soft);">lucas.martin@etudiant.uvsq.fr</div>
             </div>
-            <button type="button" class="btn btn-opn-outline btn-sm" id="btnLogout">Déconnexion</button>
+            <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline" id="w3cBtnLogout">Déconnexion</button>
           </div>
-          <div class="small mt-2" style="color: var(--opn-espresso-soft);">
-            <div><i class="bi bi-telephone me-1"></i> <span id="userPhoneDisplay">06 52 84 19 30</span></div>
-            <div><i class="bi bi-geo-alt me-1"></i> <span id="userAddressDisplay">28 Avenue Émile Cossonneau, 93160 Noisy-le-Grand</span></div>
+          <div style="font-size: 0.78rem; color: var(--espresso-soft); margin-top: 0.5rem;">
+            <div><i class="bi bi-telephone me-1"></i><span id="w3cUserPhone">06 52 84 19 30</span></div>
+            <div><i class="bi bi-geo-alt me-1"></i><span id="w3cUserAddress">28 Avenue Émile Cossonneau, 93160 Noisy-le-Grand</span></div>
           </div>
         </div>
 
-        <!-- Carte de fidélité O'Pti Noisy -->
-        <div class="p-3 rounded-3 mb-3" style="background: var(--opn-espresso); color: var(--opn-paper-surface);">
-          <div class="d-flex justify-content-between align-items-center mb-1">
-            <span class="fw-bold small font-heading">Programme Fidélité O'Pti Noisy</span>
-            <span class="badge" style="background: var(--opn-terracotta); color: #fff;" id="userPointsBadge">85 / 100 pts</span>
+        <div style="padding: 0.85rem; border-radius: var(--radius-sm); background: var(--espresso); color: var(--surface-paper); margin-bottom: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700;">
+            <span style="font-family: var(--font-heading);">Programme Fidélité O'Pti Noisy</span>
+            <span id="w3cUserPointsLabel">85 / 100 pts</span>
           </div>
-          <div class="progress my-2" style="height: 7px; background: rgba(255,255,255,0.2);">
-            <div class="progress-bar" role="progressbar" style="width: 85%; background-color: #F6F1E9;" id="userPointsBar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+          <div style="background: rgba(255,255,255,0.2); height: 7px; border-radius: 4px; margin: 0.45rem 0; overflow: hidden;">
+            <div id="w3cUserPointsBar" style="background: var(--bg-cream); width: 85%; height: 100%;"></div>
           </div>
-          <small class="opacity-75">Plus que 15 points pour obtenir <strong>1 Pizza Junior 26 cm offerte</strong>.</small>
+          <small style="font-size: 0.72rem; opacity: 0.8;">100 points = 1 Pizza Junior 26 cm offerte.</small>
         </div>
 
-        <!-- Historique des commandes -->
-        <h6 class="fw-bold font-heading mb-2">Historique des commandes</h6>
-        <div id="userOrderHistoryList" class="d-flex flex-column gap-2"></div>
+        <h3 style="font-size: 0.92rem; margin-bottom: 0.5rem;">Historique des commandes</h3>
+        <div id="w3cOrderHistory" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
       </div>
 
     </div>
-  </div>
+  </dialog>
 
   <!-- =========================================================================
        MODALE 1 : PERSONNALISATION DE PIZZA (TAILLE 26/31/40cm + BASE + SUPPLÉMENTS)
@@ -676,6 +656,6 @@
   <script src="../shared/data.js?v=4"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/app-bootstrap.js?v=4"></script>
+  <script src="js/app-bootstrap.js?v=5"></script>
 </body>
 </html>
