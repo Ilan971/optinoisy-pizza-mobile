@@ -821,35 +821,43 @@
     modal.show();
   };
 
-  // 7. COMPTE CLIENT
+  // 7. COMPTE CLIENT (IDENTIQUE VERSION W3C)
   function renderAccountView() {
-    const outView = document.getElementById("accountLoggedOutView");
-    const inView = document.getElementById("accountLoggedInView");
+    const outBox = document.getElementById("w3cAccountLoggedOut");
+    const inBox = document.getElementById("w3cAccountLoggedIn");
     const headerLabel = document.getElementById("headerAccountLabel");
     const bottomLabel = document.getElementById("bottomAccountLabel");
 
     if (!state.clientConnecte) {
-      outView.classList.remove("d-none");
-      inView.classList.add("d-none");
+      outBox.classList.remove("hidden");
+      inBox.classList.add("hidden");
       headerLabel.textContent = "Connexion";
       bottomLabel.textContent = "Compte";
       return;
     }
 
-    outView.classList.add("d-none");
-    inView.classList.remove("d-none");
+    outBox.classList.add("hidden");
+    inBox.classList.remove("hidden");
     headerLabel.textContent = state.clientConnecte.prenom;
     bottomLabel.textContent = state.clientConnecte.prenom;
 
+<<<<<<< HEAD
     document.getElementById("userFullName").textContent = `${state.clientConnecte.prenom} ${state.clientConnecte.nom}`;
     document.getElementById("userEmailDisplay").textContent = state.clientConnecte.email;
     document.getElementById("userPhoneDisplay").textContent = state.clientConnecte.telephone;
     document.getElementById("userAddressDisplay").textContent = `${state.clientConnecte.adresse}, ${state.clientConnecte.codePostal} ${state.clientConnecte.ville}`;
+=======
+    document.getElementById("w3cUserFullName").textContent = `${state.clientConnecte.prenom} ${state.clientConnecte.nom}`;
+    document.getElementById("w3cUserEmail").textContent = state.clientConnecte.email;
+    document.getElementById("w3cUserPhone").textContent = state.clientConnecte.telephone;
+    document.getElementById("w3cUserAddress").textContent = `${state.clientConnecte.adresse}, ${state.clientConnecte.codePostal} ${state.clientConnecte.ville}`;
+>>>>>>> 98f4b483705087df0c0acd9dae947a289ba8c7fd
 
     const pts = Math.min(100, state.clientConnecte.pointsFidelite || 50);
-    document.getElementById("userPointsBadge").textContent = `${pts} / 100 pts`;
-    document.getElementById("userPointsBar").style.width = `${pts}%`;
+    document.getElementById("w3cUserPointsLabel").textContent = `${pts} / 100 pts`;
+    document.getElementById("w3cUserPointsBar").style.width = `${pts}%`;
 
+<<<<<<< HEAD
     const historyEl = document.getElementById("userOrderHistoryList");
     const commandes = state.clientConnecte.commandesPrecedentes || [];
     historyEl.innerHTML = commandes
@@ -863,6 +871,21 @@
           <div style="color: var(--opn-espresso-soft); font-size: 0.72rem;">${cmd.date} • ${cmd.mode}</div>
           <div style="margin-top: 0.25rem;">${cmd.articles}</div>
           <span class="opn-tag-olive" style="margin-top: 0.35rem;">${cmd.statut}</span>
+=======
+    const histBox = document.getElementById("w3cOrderHistory");
+    const list = state.clientConnecte.commandesPrecedentes || [];
+    histBox.innerHTML = list
+      .map(
+        (c) => `
+        <div style="padding: 0.65rem; background: var(--surface-paper); border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 0.78rem;">
+          <div style="display: flex; justify-content: space-between; font-weight: 700;">
+            <span style="color: var(--terracotta);">${c.numero}</span>
+            <span>${formatEuro(c.total)}</span>
+          </div>
+          <div style="color: var(--espresso-soft); font-size: 0.72rem;">${c.date} • ${c.mode}</div>
+          <div style="margin-top: 0.25rem;">${c.articles}</div>
+          <span class="w3c-tag w3c-tag-olive" style="margin-top: 0.35rem;">${c.statut}</span>
+>>>>>>> 98f4b483705087df0c0acd9dae947a289ba8c7fd
         </div>
       `
       )
@@ -1062,50 +1085,30 @@
       });
     }
 
-    const registerForm = document.getElementById("registerForm");
-    if (registerForm) {
-      registerForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const newClient = {
-          id: "USR-" + Date.now(),
-          prenom: document.getElementById("regPrenom").value.trim(),
-          nom: document.getElementById("regNom").value.trim(),
-          email: document.getElementById("regEmail").value.trim(),
-          telephone: document.getElementById("regTel").value.trim(),
-          adresse: document.getElementById("regAdresse").value.trim(),
-          codePostal: document.getElementById("regCp").value.trim(),
-          ville: document.getElementById("regVille").value.trim(),
-          pointsFidelite: 50,
-          commandesPrecedentes: []
-        };
-        state.clientConnecte = newClient;
-        saveUser();
-        renderAccountView();
-        showToast(`Bienvenue ${newClient.prenom}, 50 points crédités`);
-      });
-    }
+    // Ouverture / Fermeture du Dialog Compte Client & Fidélité (Identique W3C)
+    document.getElementById("headerAccountBtn").addEventListener("click", () => {
+      document.getElementById("dialogAccount").showModal();
+    });
+    document.getElementById("navTabAccount").addEventListener("click", () => {
+      document.getElementById("dialogAccount").showModal();
+    });
+    document.getElementById("btnCloseAccount").addEventListener("click", () => {
+      document.getElementById("dialogAccount").close();
+    });
 
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-      loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        state.clientConnecte = JSON.parse(JSON.stringify(DATA.clientDemo));
-        saveUser();
-        renderAccountView();
-        showToast(`Bon retour ${state.clientConnecte.prenom}`);
-      });
-    }
+    const tabReg = document.getElementById("w3cTabBtnRegister");
+    const tabLog = document.getElementById("w3cTabBtnLogin");
+    const formReg = document.getElementById("w3cRegisterForm");
+    const formLog = document.getElementById("w3cLoginForm");
 
-    const btnDemo = document.getElementById("btnQuickDemoLogin");
-    if (btnDemo) {
-      btnDemo.addEventListener("click", () => {
-        state.clientConnecte = JSON.parse(JSON.stringify(DATA.clientDemo));
-        saveUser();
-        renderAccountView();
-        showToast("Profil étudiant Lucas Martin chargé");
-      });
-    }
+    tabReg.addEventListener("click", () => {
+      tabReg.className = "w3c-btn w3c-btn-espresso";
+      tabLog.className = "w3c-btn w3c-btn-outline";
+      formReg.classList.remove("hidden");
+      formLog.classList.add("hidden");
+    });
 
+<<<<<<< HEAD
     const tabReg = document.getElementById("tab-register");
     const tabLog = document.getElementById("tab-login");
     if (tabReg && tabLog) {
@@ -1128,6 +1131,55 @@
         showToast("Session déconnectée");
       });
     }
+=======
+    tabLog.addEventListener("click", () => {
+      tabLog.className = "w3c-btn w3c-btn-espresso";
+      tabReg.className = "w3c-btn w3c-btn-outline";
+      formLog.classList.remove("hidden");
+      formReg.classList.add("hidden");
+    });
+
+    formReg.addEventListener("submit", (e) => {
+      e.preventDefault();
+      state.clientConnecte = {
+        id: "USR-" + Date.now(),
+        prenom: document.getElementById("w3cRegPrenom").value.trim(),
+        nom: document.getElementById("w3cRegNom").value.trim(),
+        email: document.getElementById("w3cRegEmail").value.trim(),
+        telephone: document.getElementById("w3cRegTel").value.trim(),
+        adresse: document.getElementById("w3cRegAdresse").value.trim(),
+        codePostal: document.getElementById("w3cRegCp").value.trim(),
+        ville: document.getElementById("w3cRegVille").value.trim(),
+        pointsFidelite: 50,
+        commandesPrecedentes: []
+      };
+      saveUser();
+      renderAccountView();
+      showToast(`Compte créé pour ${state.clientConnecte.prenom}`);
+    });
+
+    formLog.addEventListener("submit", (e) => {
+      e.preventDefault();
+      state.clientConnecte = JSON.parse(JSON.stringify(DATA.clientDemo));
+      saveUser();
+      renderAccountView();
+      showToast(`Bon retour ${state.clientConnecte.prenom}`);
+    });
+
+    document.getElementById("w3cBtnDemoLogin").addEventListener("click", () => {
+      state.clientConnecte = JSON.parse(JSON.stringify(DATA.clientDemo));
+      saveUser();
+      renderAccountView();
+      showToast("Profil démo chargé");
+    });
+
+    document.getElementById("w3cBtnLogout").addEventListener("click", () => {
+      state.clientConnecte = null;
+      saveUser();
+      renderAccountView();
+      showToast("Session déconnectée");
+    });
+>>>>>>> 98f4b483705087df0c0acd9dae947a289ba8c7fd
   }
 
   window.scrollToSection = function (sectionId) {
