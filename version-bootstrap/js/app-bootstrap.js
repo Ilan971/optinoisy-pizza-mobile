@@ -730,19 +730,16 @@
     }
 
     if (alertBox && titleEl && descEl) {
-      const iconEl = alertBox.querySelector("i");
       if (eligibleInterne) {
         alertBox.style.background = "var(--opn-olive-bg)";
         alertBox.style.borderColor = "rgba(46, 74, 54, 0.3)";
         alertBox.style.color = "var(--opn-olive)";
-        if (iconEl) iconEl.className = "bi bi-check-circle-fill fs-5";
         titleEl.textContent = `Éligible Livraison Interne O'Pti Noisy (${distanceKm} km)`;
         descEl.textContent = `${adresse} • Livraison par notre livreur interne en ~${estMin} min (Offerte dès 18 €).`;
       } else {
         alertBox.style.background = "#FDF2EF";
         alertBox.style.borderColor = "rgba(184, 58, 36, 0.35)";
         alertBox.style.color = "var(--opn-terracotta)";
-        if (iconEl) iconEl.className = "bi bi-exclamation-triangle-fill fs-5";
         titleEl.textContent = `Hors Rayon Interne 5 km (${distanceKm} km de Noisy)`;
         descEl.textContent = `${adresse} • Commandez via nos passerelles partenaires Uber Eats ou Deliveroo ci-dessous.`;
       }
@@ -841,37 +838,15 @@
     headerLabel.textContent = state.clientConnecte.prenom;
     bottomLabel.textContent = state.clientConnecte.prenom;
 
-<<<<<<< HEAD
-    document.getElementById("userFullName").textContent = `${state.clientConnecte.prenom} ${state.clientConnecte.nom}`;
-    document.getElementById("userEmailDisplay").textContent = state.clientConnecte.email;
-    document.getElementById("userPhoneDisplay").textContent = state.clientConnecte.telephone;
-    document.getElementById("userAddressDisplay").textContent = `${state.clientConnecte.adresse}, ${state.clientConnecte.codePostal} ${state.clientConnecte.ville}`;
-=======
     document.getElementById("w3cUserFullName").textContent = `${state.clientConnecte.prenom} ${state.clientConnecte.nom}`;
     document.getElementById("w3cUserEmail").textContent = state.clientConnecte.email;
     document.getElementById("w3cUserPhone").textContent = state.clientConnecte.telephone;
     document.getElementById("w3cUserAddress").textContent = `${state.clientConnecte.adresse}, ${state.clientConnecte.codePostal} ${state.clientConnecte.ville}`;
->>>>>>> 98f4b483705087df0c0acd9dae947a289ba8c7fd
 
     const pts = Math.min(100, state.clientConnecte.pointsFidelite || 50);
     document.getElementById("w3cUserPointsLabel").textContent = `${pts} / 100 pts`;
     document.getElementById("w3cUserPointsBar").style.width = `${pts}%`;
 
-<<<<<<< HEAD
-    const historyEl = document.getElementById("userOrderHistoryList");
-    const commandes = state.clientConnecte.commandesPrecedentes || [];
-    historyEl.innerHTML = commandes
-      .map(
-        (cmd) => `
-        <div style="padding: 0.65rem; background: var(--opn-paper-surface); border: 1px solid var(--opn-border); border-radius: 8px; font-size: 0.78rem;">
-          <div style="display: flex; justify-content: space-between; font-weight: 700;">
-            <span style="color: var(--opn-terracotta);">${cmd.numero}</span>
-            <span>${formatEuro(cmd.total)}</span>
-          </div>
-          <div style="color: var(--opn-espresso-soft); font-size: 0.72rem;">${cmd.date} • ${cmd.mode}</div>
-          <div style="margin-top: 0.25rem;">${cmd.articles}</div>
-          <span class="opn-tag-olive" style="margin-top: 0.35rem;">${cmd.statut}</span>
-=======
     const histBox = document.getElementById("w3cOrderHistory");
     const list = state.clientConnecte.commandesPrecedentes || [];
     histBox.innerHTML = list
@@ -885,7 +860,6 @@
           <div style="color: var(--espresso-soft); font-size: 0.72rem;">${c.date} • ${c.mode}</div>
           <div style="margin-top: 0.25rem;">${c.articles}</div>
           <span class="w3c-tag w3c-tag-olive" style="margin-top: 0.35rem;">${c.statut}</span>
->>>>>>> 98f4b483705087df0c0acd9dae947a289ba8c7fd
         </div>
       `
       )
@@ -1108,30 +1082,6 @@
       formLog.classList.add("hidden");
     });
 
-<<<<<<< HEAD
-    const tabReg = document.getElementById("tab-register");
-    const tabLog = document.getElementById("tab-login");
-    if (tabReg && tabLog) {
-      tabReg.addEventListener("click", () => {
-        tabReg.className = "btn btn-opn-espresso active";
-        tabLog.className = "btn btn-opn-outline";
-      });
-      tabLog.addEventListener("click", () => {
-        tabLog.className = "btn btn-opn-espresso active";
-        tabReg.className = "btn btn-opn-outline";
-      });
-    }
-
-    const btnLogout = document.getElementById("btnLogout");
-    if (btnLogout) {
-      btnLogout.addEventListener("click", () => {
-        state.clientConnecte = null;
-        saveUser();
-        renderAccountView();
-        showToast("Session déconnectée");
-      });
-    }
-=======
     tabLog.addEventListener("click", () => {
       tabLog.className = "w3c-btn w3c-btn-espresso";
       tabReg.className = "w3c-btn w3c-btn-outline";
@@ -1179,7 +1129,6 @@
       renderAccountView();
       showToast("Session déconnectée");
     });
->>>>>>> 98f4b483705087df0c0acd9dae947a289ba8c7fd
   }
 
   window.scrollToSection = function (sectionId) {
