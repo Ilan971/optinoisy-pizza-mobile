@@ -198,6 +198,13 @@ h1, h2, h3, h4, h5, .font-heading {
   border-color: var(--opn-espresso);
 }
 
+.btn-check:checked + .btn-opn-outline,
+.btn-opn-outline.active {
+  background-color: var(--opn-espresso);
+  color: #FFFFFF;
+  border-color: var(--opn-espresso);
+}
+
 /* Hero Carousel Mobile : 100% identique à la version W3C (.w3c-hero & .w3c-hero-overlay) */
 .opn-hero-slide {
   position: relative;
@@ -619,4 +626,40 @@ h1, h2, h3, h4, h5, .font-heading {
 .modal-content {
   background-color: var(--opn-cream-bg);
   color: var(--opn-espresso);
+}
+
+.modal-header,
+.modal-footer {
+  background-color: var(--opn-paper-surface);
+  justify-content: space-between;
+}
+
+.opn-dialog-close-btn {
+  background-color: var(--opn-cream-bg);
+  border: 1px solid var(--opn-border-strong);
+  color: var(--opn-espresso);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  margin-left: auto;
+}
+
+.opn-tag-olive {
+  display: inline-block;
+  padding: 0.24rem 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  background-color: var(--opn-olive-bg);
+  color: var(--opn-olive);
+  border: 1px solid rgba(46, 74, 54, 0.25);
 }

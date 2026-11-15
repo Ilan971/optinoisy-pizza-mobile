@@ -730,16 +730,19 @@
     }
 
     if (alertBox && titleEl && descEl) {
+      const iconEl = alertBox.querySelector("i");
       if (eligibleInterne) {
         alertBox.style.background = "var(--opn-olive-bg)";
         alertBox.style.borderColor = "rgba(46, 74, 54, 0.3)";
         alertBox.style.color = "var(--opn-olive)";
+        if (iconEl) iconEl.className = "bi bi-check-circle-fill fs-5";
         titleEl.textContent = `Éligible Livraison Interne O'Pti Noisy (${distanceKm} km)`;
         descEl.textContent = `${adresse} • Livraison par notre livreur interne en ~${estMin} min (Offerte dès 18 €).`;
       } else {
         alertBox.style.background = "#FDF2EF";
         alertBox.style.borderColor = "rgba(184, 58, 36, 0.35)";
         alertBox.style.color = "var(--opn-terracotta)";
+        if (iconEl) iconEl.className = "bi bi-exclamation-triangle-fill fs-5";
         titleEl.textContent = `Hors Rayon Interne 5 km (${distanceKm} km de Noisy)`;
         descEl.textContent = `${adresse} • Commandez via nos passerelles partenaires Uber Eats ou Deliveroo ci-dessous.`;
       }
@@ -838,9 +841,6 @@
     headerLabel.textContent = state.clientConnecte.prenom;
     bottomLabel.textContent = state.clientConnecte.prenom;
 
-    const initials =
-      (state.clientConnecte.prenom[0] || "U") + (state.clientConnecte.nom[0] || "P");
-    document.getElementById("userAvatarInitials").textContent = initials.toUpperCase();
     document.getElementById("userFullName").textContent = `${state.clientConnecte.prenom} ${state.clientConnecte.nom}`;
     document.getElementById("userEmailDisplay").textContent = state.clientConnecte.email;
     document.getElementById("userPhoneDisplay").textContent = state.clientConnecte.telephone;
@@ -852,25 +852,21 @@
 
     const historyEl = document.getElementById("userOrderHistoryList");
     const commandes = state.clientConnecte.commandesPrecedentes || [];
-    if (commandes.length === 0) {
-      historyEl.innerHTML = `<div class="small" style="color: var(--opn-espresso-soft);">Aucune commande passée pour le moment.</div>`;
-    } else {
-      historyEl.innerHTML = commandes
-        .map(
-          (cmd) => `
-          <div class="p-2 rounded-2 small" style="background: var(--opn-paper-surface); border: 1px solid var(--opn-border);">
-            <div class="d-flex justify-content-between fw-bold">
-              <span style="color: var(--opn-terracotta);">${cmd.numero}</span>
-              <span>${formatEuro(cmd.total)}</span>
-            </div>
-            <div style="font-size: 0.72rem; color: var(--opn-espresso-soft);">${cmd.date} • ${cmd.mode}</div>
-            <div class="mt-1" style="font-size: 0.78rem;">${cmd.articles}</div>
-            <span class="opn-status-pill mt-1">${cmd.statut}</span>
+    historyEl.innerHTML = commandes
+      .map(
+        (cmd) => `
+        <div style="padding: 0.65rem; background: var(--opn-paper-surface); border: 1px solid var(--opn-border); border-radius: 8px; font-size: 0.78rem;">
+          <div style="display: flex; justify-content: space-between; font-weight: 700;">
+            <span style="color: var(--opn-terracotta);">${cmd.numero}</span>
+            <span>${formatEuro(cmd.total)}</span>
           </div>
-        `
-        )
-        .join("");
-    }
+          <div style="color: var(--opn-espresso-soft); font-size: 0.72rem;">${cmd.date} • ${cmd.mode}</div>
+          <div style="margin-top: 0.25rem;">${cmd.articles}</div>
+          <span class="opn-tag-olive" style="margin-top: 0.35rem;">${cmd.statut}</span>
+        </div>
+      `
+      )
+      .join("");
   }
 
   // 8. ÉVÉNEMENTS
@@ -1107,6 +1103,19 @@
         saveUser();
         renderAccountView();
         showToast("Profil étudiant Lucas Martin chargé");
+      });
+    }
+
+    const tabReg = document.getElementById("tab-register");
+    const tabLog = document.getElementById("tab-login");
+    if (tabReg && tabLog) {
+      tabReg.addEventListener("click", () => {
+        tabReg.className = "btn btn-opn-espresso active";
+        tabLog.className = "btn btn-opn-outline";
+      });
+      tabLog.addEventListener("click", () => {
+        tabLog.className = "btn btn-opn-espresso active";
+        tabReg.className = "btn btn-opn-outline";
       });
     }
 

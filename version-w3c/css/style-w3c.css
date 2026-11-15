@@ -42,7 +42,7 @@ body {
   background-color: var(--bg-outer);
   color: var(--espresso);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -137,6 +137,7 @@ select {
   color: var(--terracotta);
   font-weight: 700;
   display: block;
+  line-height: 1.5;
 }
 
 .w3c-header-actions {
@@ -263,18 +264,19 @@ select {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 0.45rem;
+  gap: 6px;
   z-index: 5;
 }
 
 .w3c-hero-dot {
-  width: 22px;
-  height: 4px;
-  border-radius: 2px;
+  width: 30px;
+  height: 3px;
+  border-radius: 0;
   border: none;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   padding: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
 .w3c-hero-dot.active {
@@ -312,7 +314,7 @@ select {
 /* Bandeau Mode de Réception & Passerelles */
 .w3c-delivery-bar {
   background-color: var(--surface-paper);
-  padding: 0.9rem 1rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -320,8 +322,8 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.6rem;
-  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .w3c-channel-grid {
@@ -342,6 +344,7 @@ select {
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .w3c-channel-pill.active-interne {
@@ -364,7 +367,7 @@ select {
 
 /* Guide des 3 tailles de pizzas (#432918 sur fond Crème) */
 .w3c-sizes-legend {
-  margin: 0.85rem 1rem 0.25rem;
+  margin: 1rem 1rem 0.25rem;
   padding: 0.75rem;
   border-radius: var(--radius-md);
   background-color: var(--surface-paper);
@@ -374,7 +377,7 @@ select {
 .w3c-sizes-legend-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.45rem;
+  gap: 0.5rem;
   margin-top: 0.5rem;
   text-align: center;
 }
@@ -383,7 +386,7 @@ select {
   background-color: var(--bg-cream);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
-  padding: 0.45rem 0.2rem;
+  padding: 0.45rem 0.25rem;
 }
 
 .w3c-sizes-legend-item img {
@@ -394,7 +397,7 @@ select {
 /* Barre de Catégories Sticky */
 .w3c-cat-nav {
   position: sticky;
-  top: 56px;
+  top: 55px;
   z-index: 90;
   display: flex;
   gap: 0.45rem;
@@ -490,7 +493,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.85rem;
+  margin-bottom: 1rem;
 }
 
 .w3c-products-grid {
@@ -504,6 +507,11 @@ select {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.w3c-card:hover {
+  border-color: var(--espresso);
 }
 
 .w3c-card-media {
@@ -523,14 +531,14 @@ select {
 
 .w3c-card-badge-left {
   position: absolute;
-  top: 0.55rem;
-  left: 0.55rem;
+  top: 0.5rem;
+  left: 0.5rem;
 }
 
 .w3c-card-badge-right {
   position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
+  top: 0.5rem;
+  right: 0.5rem;
   background-color: var(--espresso);
   color: #ffffff;
   padding: 0.22rem 0.55rem;
@@ -540,7 +548,7 @@ select {
 }
 
 .w3c-card-body {
-  padding: 0.95rem;
+  padding: 1rem;
 }
 
 .w3c-card-title-row {
@@ -548,11 +556,11 @@ select {
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.25rem;
 }
 
 .w3c-card-title {
-  font-size: 1.04rem;
+  font-size: 1rem;
   font-weight: 700;
   margin: 0;
 }
@@ -566,9 +574,9 @@ select {
 }
 
 .w3c-card-desc {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   color: var(--espresso-soft);
-  margin: 0 0 0.7rem 0;
+  margin: 0 0 0.5rem 0;
 }
 
 /* Sélecteur de Tailles de Pizzas (26 / 31 / 40 cm) avec SVG officiels */
@@ -576,6 +584,7 @@ select {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.45rem;
+  margin-top: 0.65rem;
   margin-bottom: 0.75rem;
 }
 
@@ -622,6 +631,17 @@ select {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.w3c-card-actions .w3c-btn {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.85rem;
+}
+
+.w3c-card-actions .w3c-btn-outline {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .w3c-card-actions .w3c-btn-block {
@@ -635,15 +655,15 @@ select {
   height: 230px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-strong);
-  margin: 0.75rem 0;
+  margin: 0 0 1rem 0;
   z-index: 1;
 }
 
 .w3c-alert {
-  padding: 0.75rem;
-  border-radius: var(--radius-sm);
-  margin-bottom: 0.85rem;
-  font-size: 0.83rem;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
 }
 
 .w3c-alert-success {
@@ -668,6 +688,7 @@ dialog.w3c-dialog {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   padding: 0;
+  margin: auto;
 }
 
 dialog.w3c-dialog::backdrop {
@@ -709,13 +730,14 @@ dialog.w3c-dialog::backdrop {
   font-weight: 700;
 }
 
-/* Aperçu Carte Bancaire */
+/* Aperçu Carte Bancaire (identique à .opn-credit-card-preview) */
 .w3c-cb-card {
   background-color: var(--espresso);
-  border-radius: var(--radius-md);
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 1.15rem;
   color: var(--surface-paper);
-  margin-bottom: 0.85rem;
+  border: 1px solid var(--border-strong);
+  margin-bottom: 1rem;
 }
 
 /* Grille Formulaires */
@@ -789,13 +811,36 @@ dialog.w3c-dialog::backdrop {
 .w3c-cart-badge {
   position: absolute;
   top: 0;
-  right: 20%;
+  right: 22%;
   background-color: var(--terracotta);
   color: #ffffff;
   font-size: 0.64rem;
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 99px;
+}
+
+.w3c-btn-gateway-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  line-height: 1.3;
+}
+
+.w3c-user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--espresso);
+  color: #ffffff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 /* Toast Notification W3C */

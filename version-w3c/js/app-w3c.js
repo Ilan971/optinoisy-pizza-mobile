@@ -238,7 +238,23 @@
     }
 
     if (filtered.length === 0) {
-      grid.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--espresso-soft);">Aucune recette ne correspond à votre recherche.</div>`;
+      grid.innerHTML = `
+        <div style="text-align: center; padding: 1.5rem 0;">
+          <p style="margin: 0 0 0.5rem 0; color: var(--espresso-soft);">Aucune recette ne correspond à votre recherche.</p>
+          <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline" id="w3cBtnResetFilters">Afficher toute la carte</button>
+        </div>
+      `;
+      const resetBtn = document.getElementById("w3cBtnResetFilters");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          state.categorieActive = "tous";
+          state.recherche = "";
+          const sInput = document.getElementById("w3cSearchInput");
+          if (sInput) sInput.value = "";
+          renderCategoryNav();
+          renderProductsGrid();
+        });
+      }
       return;
     }
 
@@ -407,7 +423,9 @@
     baseSelect.innerHTML = DATA.basesPizza
       .map(
         (b) =>
-          `<option value="${b.code}" ${b.code === baseCode ? "selected" : ""}>${b.nom}</option>`
+          `<option value="${b.code}" ${b.code === baseCode ? "selected" : ""}>${b.nom} ${
+            b.supplement > 0 ? `(+${formatEuro(b.supplement)})` : "(Incluse)"
+          }</option>`
       )
       .join("");
 
@@ -416,9 +434,9 @@
       .map((s) => {
         const checked = supplementsIds.includes(s.id);
         return `
-          <label style="display: flex; justify-content: space-between; padding: 0.45rem 0.65rem; background: var(--surface-paper); border-radius: 6px; border: 1px solid var(--border-subtle); font-size: 0.8rem;">
+          <label style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; background: var(--surface-paper); border-radius: 6px; border: 1px solid var(--border-subtle); font-size: 0.875rem;">
             <span>
-              <input type="checkbox" value="${s.id}" ${checked ? "checked" : ""} data-modal-sup="${s.id}">
+              <input type="checkbox" value="${s.id}" ${checked ? "checked" : ""} data-modal-sup="${s.id}" style="margin-right: 0.5rem;">
               ${s.nom}
             </span>
             <strong style="color: var(--terracotta);">+${formatEuro(s.prix)}</strong>
@@ -530,24 +548,31 @@
     if (!list) return;
 
     if (state.panier.length === 0) {
-      list.innerHTML = `<div style="text-align: center; padding: 1.5rem; color: var(--espresso-soft);"><i class="bi bi-bag-x" style="font-size: 1.5rem; display: block; margin-bottom: 0.25rem;"></i>Votre panier est vide.</div>`;
+      list.innerHTML = `<div style="text-align: center; padding: 1.5rem 0; color: var(--espresso-soft);"><i class="bi bi-bag-x" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>Votre panier est vide. Sélectionnez une pizza 26, 31 ou 40 cm.</div>`;
     } else {
       list.innerHTML = state.panier
         .map(
           (item) => `
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.6rem; background: var(--surface-paper); border: 1px solid var(--border-subtle); border-radius: 8px; margin-bottom: 0.5rem;">
-            <img src="${item.image}" alt="${item.nom}" style="width: 50px; height: 50px; border-radius: 6px; object-fit: cover;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.5rem; background: var(--surface-paper); border: 1px solid var(--border-subtle); border-radius: 6px; margin-bottom: 0.5rem;">
+            <img src="${item.image}" alt="${item.nom}" style="width: 54px; height: 54px; border-radius: 6px; object-fit: cover;">
             <div style="flex: 1;">
-              <div style="font-family: var(--font-heading); font-size: 0.86rem; font-weight: 700;">${item.nom}</div>
-              <div style="font-size: 0.72rem; color: var(--terracotta); font-weight: 600;">${item.tailleLabel}</div>
-              <div style="font-size: 0.8rem; font-weight: 700; margin-top: 2px;">${formatEuro(
+              <div style="font-family: var(--font-heading); font-size: 0.875rem; font-weight: 700;">${item.nom}</div>
+              <div style="font-size: 0.72rem; color: var(--terracotta); font-weight: 600;">
+                ${item.tailleLabel} ${item.baseLabel ? `• ${item.baseLabel}` : ""}
+              </div>
+              ${
+                item.supplements && item.supplements.length > 0
+                  ? `<div style="font-size: 0.68rem; color: var(--espresso-soft);">+ ${item.supplements.join(", ")}</div>`
+                  : ""
+              }
+              <div style="font-size: 0.875rem; font-weight: 700; margin-top: 0.25rem;">${formatEuro(
                 item.prixUnitaire * item.quantite
               )}</div>
             </div>
-            <div style="display: flex; align-items: center; gap: 0.35rem;">
-              <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline" data-qty-uid="${item.uid}" data-qty-delta="-1">-</button>
-              <strong style="font-size: 0.85rem;">${item.quantite}</strong>
-              <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-espresso" data-qty-uid="${item.uid}" data-qty-delta="1">+</button>
+            <div style="display: flex; align-items: center; gap: 0.25rem;">
+              <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-outline" style="padding: 0 0.5rem;" data-qty-uid="${item.uid}" data-qty-delta="-1">-</button>
+              <strong style="font-size: 0.875rem; padding: 0 0.25rem;">${item.quantite}</strong>
+              <button type="button" class="w3c-btn w3c-btn-sm w3c-btn-espresso" style="padding: 0 0.5rem;" data-qty-uid="${item.uid}" data-qty-delta="1">+</button>
             </div>
           </div>
         `
@@ -695,17 +720,20 @@
     document.getElementById("w3cEtaBadge").innerHTML = `<i class="bi bi-clock me-1"></i>${estMin} min`;
 
     const alertBox = document.getElementById("w3cGeoAlertBox");
+    const alertIcon = document.getElementById("w3cGeoAlertIcon");
     const alertTitle = document.getElementById("w3cGeoAlertTitle");
     const alertDesc = document.getElementById("w3cGeoAlertDesc");
 
     if (eligibleInterne) {
       alertBox.className = "w3c-alert w3c-alert-success";
-      alertTitle.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i>Éligible Livraison Interne O'Pti Noisy (${distanceKm} km)`;
+      if (alertIcon) alertIcon.className = "bi bi-check-circle-fill";
+      alertTitle.textContent = `Éligible Livraison Interne O'Pti Noisy (${distanceKm} km)`;
       alertDesc.textContent = `${adresse} • Livraison par notre livreur interne en ~${estMin} min (Offerte dès 18 €).`;
     } else {
       alertBox.className = "w3c-alert w3c-alert-warning";
-      alertTitle.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i>Hors Rayon Interne 5 km (${distanceKm} km de Noisy)`;
-      alertDesc.textContent = `${adresse} • Commandez via nos passerelles partenaires Uber Eats ou Deliveroo.`;
+      if (alertIcon) alertIcon.className = "bi bi-exclamation-triangle-fill";
+      alertTitle.textContent = `Hors Rayon Interne 5 km (${distanceKm} km de Noisy)`;
+      alertDesc.textContent = `${adresse} • Commandez via nos passerelles partenaires Uber Eats ou Deliveroo ci-dessous.`;
     }
 
     document.querySelectorAll("#w3cChannelGrid .w3c-channel-pill").forEach((btn) => {
@@ -719,10 +747,10 @@
     });
 
     const modeLabels = {
-      livraison_interne: "Mode : Livraison Interne Géolocalisée",
+      livraison_interne: "Mode : Livraison Interne Géolocalisée O'Pti Noisy",
       click_collect: "Mode : Retrait au comptoir (15 min)",
-      ubereats: "Mode : Passerelle Uber Eats",
-      deliveroo: "Mode : Passerelle Deliveroo"
+      ubereats: "Mode : Passerelle Partenaire Uber Eats",
+      deliveroo: "Mode : Passerelle Partenaire Deliveroo"
     };
     document.getElementById("w3cCartModeSubtitle").textContent = modeLabels[state.modeReception] || "";
   }
@@ -739,8 +767,8 @@
     badge.style.backgroundColor = p.couleur;
     badge.style.color = "#051B10";
 
-    document.getElementById("w3cGatewayHeading").textContent = `Passerelle O'Pti Noisy × ${p.nom}`;
-    document.getElementById("w3cGatewayDesc").textContent = `Transférez votre commande vers notre boutique officielle ${p.nom} (${p.note}).`;
+    document.getElementById("w3cGatewayHeading").textContent = `Passerelle Officielle O'Pti Noisy × ${p.nom}`;
+    document.getElementById("w3cGatewayDesc").textContent = `Votre sélection est prête à être transmise au coursier ${p.nom} (${p.note}).`;
     document.getElementById("w3cGatewayEta").textContent = p.delai;
     document.getElementById("w3cGatewayFee").textContent = formatEuro(p.frais);
 
@@ -962,6 +990,15 @@
       document.getElementById("w3cPaymentFormWrap").classList.remove("hidden");
       document.getElementById("w3cPaymentSuccessWrap").classList.add("hidden");
       document.getElementById("dialogCheckout").showModal();
+    });
+
+    document.querySelectorAll("#w3cPayMethodGroup button").forEach((btn, _, allBtns) => {
+      btn.addEventListener("click", () => {
+        allBtns.forEach((b) => {
+          b.className = "w3c-btn w3c-btn-sm w3c-btn-outline";
+        });
+        btn.className = "w3c-btn w3c-btn-sm w3c-btn-espresso";
+      });
     });
 
     document.getElementById("w3cInputCardName").addEventListener("input", (e) => {
