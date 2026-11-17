@@ -136,12 +136,12 @@
           <img src="${s.image}" alt="${s.titre}">
           <div class="w3c-hero-overlay">
             <div>
-              <span class="w3c-tag w3c-tag-paper">${s.badge}</span>
+              <button type="button" class="w3c-tag w3c-tag-paper" style="cursor: pointer;" data-hero-slide-id="${s.id}">${s.badge}</button>
             </div>
             <div>
               <h1 style="font-size: 1.45rem; font-weight: 700; margin-bottom: 0.35rem; color: #ffffff;">${s.titre}</h1>
               <p style="font-size: 0.82rem; color: #f0ebe3; margin: 0 0 0.85rem 0;">${s.sousTitre}</p>
-              <button type="button" class="w3c-btn w3c-btn-terracotta" data-hero-cat="${s.ctaCategorie}">
+              <button type="button" class="w3c-btn w3c-btn-terracotta" data-hero-slide-id="${s.id}">
                 ${s.ctaTexte} →
               </button>
             </div>
@@ -160,9 +160,9 @@
       )
       .join("");
 
-    track.querySelectorAll("[data-hero-cat]").forEach((btn) => {
+    track.querySelectorAll("[data-hero-slide-id]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        setCategory(btn.getAttribute("data-hero-cat"));
+        handleHeroAction(btn.getAttribute("data-hero-slide-id"));
       });
     });
 
@@ -171,6 +171,31 @@
         setHeroSlide(Number(dot.getAttribute("data-dot-idx")));
       });
     });
+  }
+
+  function handleHeroAction(slideId) {
+    const slide = DATA.heroSlides.find((s) => s.id === slideId);
+    if (!slide) return;
+
+    state.recherche = "";
+    const sInput = document.getElementById("w3cSearchInput");
+    if (sInput) sInput.value = "";
+
+    setCategory(slide.ctaCategorie);
+
+    const menuEl = document.getElementById("w3cSectionMenu");
+    if (menuEl) {
+      menuEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    if (slide.id === "slide-2") {
+      openCustomizeDialog("piz-4-fromages");
+    } else {
+      const catObj = DATA.categories.find((c) => c.id === slide.ctaCategorie);
+      if (catObj) {
+        showToast(`Catégorie affichée : ${catObj.nom}`);
+      }
+    }
   }
 
   function setHeroSlide(idx) {

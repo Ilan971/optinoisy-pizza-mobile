@@ -257,6 +257,14 @@ h1, h2, h3, h4, h5, .font-heading {
   background-color: var(--opn-paper-surface);
   color: var(--opn-espresso);
   border: 1px solid var(--opn-border-strong);
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  transition: background-color 0.15s ease;
+}
+
+.opn-hero-tag:hover {
+  background-color: var(--opn-sand-muted);
 }
 
 .opn-hero-title {
@@ -290,6 +298,8 @@ h1, h2, h3, h4, h5, .font-heading {
   border: 1px solid var(--opn-terracotta);
   cursor: pointer;
   text-decoration: none;
+  position: relative;
+  z-index: 3;
   transition: background-color 0.15s ease;
 }
 

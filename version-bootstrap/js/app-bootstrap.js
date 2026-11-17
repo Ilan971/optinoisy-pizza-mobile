@@ -145,12 +145,12 @@
             <img src="${slide.image}" alt="${slide.titre}">
             <div class="opn-hero-overlay">
               <div>
-                <span class="opn-hero-tag">${slide.badge}</span>
+                <button type="button" class="opn-hero-tag" onclick="handleHeroAction('${slide.id}')">${slide.badge}</button>
               </div>
               <div>
                 <h1 class="opn-hero-title">${slide.titre}</h1>
                 <p class="opn-hero-subtitle">${slide.sousTitre}</p>
-                <button type="button" class="opn-hero-cta" onclick="filterByCategory('${slide.ctaCategorie}')">
+                <button type="button" class="opn-hero-cta" onclick="handleHeroAction('${slide.id}')">
                   ${slide.ctaTexte} →
                 </button>
               </div>
@@ -161,6 +161,31 @@
       )
       .join("");
   }
+
+  window.handleHeroAction = function (slideId) {
+    const slide = DATA.heroSlides.find((s) => s.id === slideId);
+    if (!slide) return;
+
+    state.recherche = "";
+    const sInput = document.getElementById("searchInput");
+    if (sInput) sInput.value = "";
+
+    window.filterByCategory(slide.ctaCategorie);
+
+    const menuEl = document.getElementById("sectionMenu");
+    if (menuEl) {
+      menuEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    if (slide.id === "slide-2") {
+      window.openCustomizeModal("piz-4-fromages");
+    } else {
+      const catObj = DATA.categories.find((c) => c.id === slide.ctaCategorie);
+      if (catObj) {
+        showToast(`Catégorie affichée : ${catObj.nom}`);
+      }
+    }
+  };
 
   // 2. CATÉGORIES
   function renderCategoryPills() {
