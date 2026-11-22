@@ -1099,12 +1099,34 @@
     const tabLog = document.getElementById("w3cTabBtnLogin");
     const formReg = document.getElementById("w3cRegisterForm");
     const formLog = document.getElementById("w3cLoginForm");
+    const loginErrAlert = document.getElementById("w3cLoginErrorAlert");
+    const loginErrText = document.getElementById("w3cLoginErrorText");
+
+    function getRegisteredAccounts() {
+      try {
+        const raw = localStorage.getItem("opn_accounts_v2");
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveRegisteredAccount(acc) {
+      try {
+        const list = getRegisteredAccounts().filter(
+          (u) => u.email.toLowerCase() !== acc.email.toLowerCase()
+        );
+        list.push(acc);
+        localStorage.setItem("opn_accounts_v2", JSON.stringify(list));
+      } catch (e) {}
+    }
 
     tabReg.addEventListener("click", () => {
       tabReg.className = "w3c-btn w3c-btn-espresso";
       tabLog.className = "w3c-btn w3c-btn-outline";
       formReg.classList.remove("hidden");
       formLog.classList.add("hidden");
+      if (loginErrAlert) loginErrAlert.classList.add("hidden");
     });
 
     tabLog.addEventListener("click", () => {
@@ -1112,15 +1134,17 @@
       tabReg.className = "w3c-btn w3c-btn-outline";
       formLog.classList.remove("hidden");
       formReg.classList.add("hidden");
+      if (loginErrAlert) loginErrAlert.classList.add("hidden");
     });
 
     formReg.addEventListener("submit", (e) => {
       e.preventDefault();
-      state.clientConnecte = {
+      const newAccount = {
         id: "USR-" + Date.now(),
         prenom: document.getElementById("w3cRegPrenom").value.trim(),
         nom: document.getElementById("w3cRegNom").value.trim(),
         email: document.getElementById("w3cRegEmail").value.trim(),
+        motDePasse: document.getElementById("w3cRegPass").value,
         telephone: document.getElementById("w3cRegTel").value.trim(),
         adresse: document.getElementById("w3cRegAdresse").value.trim(),
         codePostal: document.getElementById("w3cRegCp").value.trim(),
@@ -1128,6 +1152,8 @@
         pointsFidelite: 50,
         commandesPrecedentes: []
       };
+      saveRegisteredAccount(newAccount);
+      state.clientConnecte = newAccount;
       saveUser();
       renderAccountView();
       showToast(`Compte créé pour ${state.clientConnecte.prenom}`);
@@ -1135,7 +1161,26 @@
 
     formLog.addEventListener("submit", (e) => {
       e.preventDefault();
-      state.clientConnecte = JSON.parse(JSON.stringify(DATA.clientDemo));
+      const emailSaisi = document.getElementById("w3cLoginEmail").value.trim().toLowerCase();
+      const passSaisi = document.getElementById("w3cLoginPass").value;
+
+      const allAccounts = [DATA.clientDemo, ...getRegisteredAccounts()];
+      const foundAccount = allAccounts.find(
+        (acc) => acc && acc.email && acc.email.toLowerCase() === emailSaisi
+      );
+      const expectedPass = foundAccount ? (foundAccount.motDePasse || "optinoisy2026") : null;
+
+      if (!foundAccount || passSaisi !== expectedPass) {
+        if (loginErrAlert && loginErrText) {
+          loginErrText.textContent = "Ce compte n'existe pas / Mot de passe erroné";
+          loginErrAlert.classList.remove("hidden");
+        }
+        showToast("Ce compte n'existe pas / Mot de passe erroné");
+        return;
+      }
+
+      if (loginErrAlert) loginErrAlert.classList.add("hidden");
+      state.clientConnecte = JSON.parse(JSON.stringify(foundAccount));
       saveUser();
       renderAccountView();
       showToast(`Bon retour ${state.clientConnecte.prenom}`);

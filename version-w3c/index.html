@@ -393,6 +393,10 @@
 
         <!-- Formulaire Connexion -->
         <form id="w3cLoginForm" class="hidden">
+          <div id="w3cLoginErrorAlert" class="hidden" role="alert" style="padding: 0.65rem 0.75rem; border-radius: 6px; background-color: #fdf2ef; border: 1px solid rgba(184, 58, 36, 0.35); color: var(--terracotta); font-size: 0.78rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.45rem;">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span id="w3cLoginErrorText">Ce compte n'existe pas / Mot de passe erroné</span>
+          </div>
           <div class="w3c-form-group">
             <label for="w3cLoginEmail" class="w3c-label">Email client *</label>
             <input type="email" id="w3cLoginEmail" class="w3c-input" required value="lucas.martin@etudiant.uvsq.fr">
@@ -581,8 +585,8 @@
   </div>
 
   <!-- SCRIPTS -->
-  <script src="../shared/data.js?v=8"></script>
+  <script src="../shared/data.js?v=9"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="js/app-w3c.js?v=8"></script>
+  <script src="js/app-w3c.js?v=9"></script>
 </body>
 </html>

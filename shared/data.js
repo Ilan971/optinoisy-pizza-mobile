@@ -367,6 +367,7 @@ window.OPTINOISY_DATA = {
     prenom: "Lucas",
     nom: "Martin",
     email: "lucas.martin@etudiant.uvsq.fr",
+    motDePasse: "optinoisy2026",
     telephone: "06 52 84 19 30",
     adresse: "28 Avenue Émile Cossonneau",
     codePostal: "93160",
